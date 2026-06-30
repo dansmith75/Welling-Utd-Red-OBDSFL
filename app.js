@@ -1,5 +1,5 @@
 const DATA = "data/";
-const GITHUB_GALLERY_API = "https://api.github.com/repos/dansmith75/danson-u21-dashboard/contents/gallery";
+const GITHUB_GALLERY_API = "https://api.github.com/repos/dansmith75/welling-utd-red-obdsfl/contents/gallery";
 
 let store = {};
 let charts = {};
