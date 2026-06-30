@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Danson U21 Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="hero">
+    <div class="hero-left">
+      <img src="Danson-Logo.png" alt="Danson logo">
+      <div>
+        <h1>Danson U21 Dashboard</h1>
+        <p>2025/26 Season Statistics</p>
+      </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle">Light Mode</button>
+  </header>
+
+  <main>
+    <nav class="tabs">
+      <button class="tab-btn active" data-page="overview">Overview</button>
+      <button class="tab-btn" data-page="results">Results</button>
+      <button class="tab-btn" data-page="goals">Goals</button>
+      <button class="tab-btn" data-page="attendance">Attendance</button>
+      <button class="tab-btn" data-page="events">Events</button>
+      <button class="tab-btn" data-page="players">Players</button>
+      <button class="tab-btn" data-page="gallery">Gallery</button>
+    </nav>
+
+    <section id="overview" class="page active">
+      <div class="overview-block">
+        <h2>Form Guide</h2>
+        <div class="card">
+          <p class="executive">Last 5 competitive fixtures</p>
+          <div class="form-guide" id="formGuide"></div>
+        </div>
+      </div>
+
+      <div class="overview-block">
+        <h2>Competitive Summary</h2>
+        <div class="summary" id="competitiveSummary"></div>
+      </div>
+
+      <div class="overview-block">
+        <h2>Friendly Summary</h2>
+        <div class="summary" id="friendlySummary"></div>
+      </div>
+
+      <div class="overview-block">
+        <h2>Training Summary</h2>
+        <div class="summary" id="trainingSummary"></div>
+      </div>
+
+      <div class="card executive">
+        <h2>Executive Summary</h2>
+        <p id="executiveSummary">Loading summary...</p>
+      </div>
+    </section>
+
+    <section id="results" class="page">
+      <div class="drill-label" id="resultsDrillLabel"></div>
+
+      <div class="card">
+        <h2 id="resultsTitle">Match Results</h2>
+
+        <div class="results-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Opposition</th>
+                <th>Home/Away</th>
+                <th>Competition</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>Result</th>
+                <th>Scorers</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="goals" class="page">
+      <div class="drill-label" id="goalsDrillLabel"></div>
+
+      <div class="card filters">
+        <h3>Competition</h3>
+        <label><input type="radio" name="goalComp" value="All" checked> All</label>
+        <label><input type="radio" name="goalComp" value="League"> League</label>
+        <label><input type="radio" name="goalComp" value="Cup"> Cup</label>
+        <label><input type="radio" name="goalComp" value="Shield"> Shield</label>
+        <label><input type="radio" name="goalComp" value="Friendly"> Friendly</label>
+
+        <h3>Home / Away</h3>
+        <label><input type="radio" name="goalHA" value="Both" checked> Both</label>
+        <label><input type="radio" name="goalHA" value="Home"> Home</label>
+        <label><input type="radio" name="goalHA" value="Away"> Away</label>
+      </div>
+
+      <div class="chart-container">
+        <h2 class="chart-title">Goals by Player</h2>
+        <div class="chart-scroll">
+          <div class="chart-box">
+            <canvas id="goalsByPlayerChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2 class="chart-title">Assists by Player</h2>
+<div class="chart-scroll">
+  <div class="chart-box">
+    <canvas id="assistsByPlayerChart"></canvas>
+  </div>
+</div>
+        
+    </section>
+
+    <section id="attendance" class="page">
+      <div class="drill-label" id="attendanceDrillLabel"></div>
+
+      <div class="chart-container">
+        <h2 class="chart-title">Match Attendance</h2>
+        <div class="chart-scroll">
+          <div class="chart-box">
+            <canvas id="matchAttendanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2 class="chart-title">Training Attendance</h2>
+        <div class="chart-scroll">
+          <div class="chart-box">
+            <canvas id="trainingAttendanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="page">
+      <div class="card executive">
+        <h2>Events Timeline</h2>
+        <p>A factual but slightly lighter look at the season’s notable moments.</p>
+      </div>
+
+      <div class="timeline" id="eventsTimeline"></div>
+    </section>
+
+    <section id="players" class="page">
+      <div class="card">
+        <h2>Select a Player</h2>
+        <div class="player-grid" id="playerGrid"></div>
+      </div>
+
+      <div id="playerProfile"></div>
+    </section>
+
+    <section id="gallery" class="page">
+      <div class="gallery-stage">
+        <div class="gallery-main">
+          <button class="gallery-nav" id="galleryPrev">‹</button>
+
+          <div class="gallery-image-wrap" id="galleryImageWrap">
+            <img id="galleryMainImage" src="" alt="Gallery image">
+          </div>
+
+          <button class="gallery-nav" id="galleryNext">›</button>
+        </div>
+
+        <div class="thumbnail-strip" id="thumbnailStrip"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="fullscreen" id="fullscreen">
+    <button class="fullscreen-close" id="fullscreenClose">Close</button>
+    <img id="fullscreenImage" src="" alt="Fullscreen gallery image">
+  </div>
+
+  <div class="visit-counter" id="visitCounter">Visits: 0</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

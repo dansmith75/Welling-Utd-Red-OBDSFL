@@ -1,0 +1,290 @@
+[
+  {
+    "date": "2025-08-31",
+    "opposition": "Hayden Youth",
+    "homeAway": "Away",
+    "competition": "Friendly",
+    "goalsFor": 3,
+    "goalsAgainst": 5,
+    "result": "Loss"
+  },
+  {
+    "date": "2025-09-07",
+    "opposition": "Orpington Town",
+    "homeAway": "Away",
+    "competition": "Friendly",
+    "goalsFor": 7,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2025-09-14",
+    "opposition": "Crayford Arrows",
+    "homeAway": "Away",
+    "competition": "Friendly",
+    "goalsFor": 5,
+    "goalsAgainst": 1,
+    "result": "Win"
+  },
+  {
+    "date": "2025-09-21",
+    "opposition": "Junior Reds Spartans",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 1,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2025-09-28",
+    "opposition": "Peoples FC",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 12,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2025-10-05",
+    "opposition": "Dulwich Hamlet FC",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 10,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2025-10-12",
+    "opposition": "Slade Green Knights",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 4,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2025-10-19",
+    "opposition": "Guru Nanak Youth",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 4,
+    "goalsAgainst": 4,
+    "result": "Draw"
+  },
+  {
+    "date": "2025-11-02",
+    "opposition": "Kent United FC",
+    "homeAway": "Away",
+    "competition": "Cup",
+    "goalsFor": 3,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2025-11-09",
+    "opposition": "Russlers",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 2,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2025-11-16",
+    "opposition": "Slade Green Knights",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 4,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2025-11-23",
+    "opposition": "Guru Nanak Youth",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 4,
+    "goalsAgainst": 4,
+    "result": "Draw"
+  },
+  {
+    "date": "2025-12-07",
+    "opposition": "Junior Reds Spartans",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 1,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2025-12-14",
+    "opposition": "Russlers",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 2,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-01-04",
+    "opposition": "Dulwich Hamlet JFC (cancelled)",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": "-",
+    "goalsAgainst": "-",
+    "result": 0
+  },
+  {
+    "date": "2026-01-11",
+    "opposition": "AFC Lewisham (Abandoned)",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 0,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2026-01-18",
+    "opposition": "FC Elmstead",
+    "homeAway": "Away",
+    "competition": "Cup",
+    "goalsFor": 3,
+    "goalsAgainst": 6,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-01-25",
+    "opposition": "AFC Lewisham (water logged pitch)",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": "-",
+    "goalsAgainst": "-",
+    "result": 0
+  },
+  {
+    "date": "2026-02-01",
+    "opposition": "Danson U18 Kent",
+    "homeAway": "Home",
+    "competition": "Friendly",
+    "goalsFor": 3,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2026-02-08",
+    "opposition": "Dulwich Hamlet JFC(water logged pitch)",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": "-",
+    "goalsAgainst": "-",
+    "result": 0
+  },
+  {
+    "date": "2026-02-15",
+    "opposition": "AFC Lewisham",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 7,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2026-02-22",
+    "opposition": "Dulwich Hamlet JFC",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 0,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2026-03-01",
+    "opposition": "Our Lady Youth White",
+    "homeAway": "Home",
+    "competition": "Shield",
+    "goalsFor": 2,
+    "goalsAgainst": 1,
+    "result": "Win"
+  },
+  {
+    "date": "2026-03-08",
+    "opposition": "Docklands",
+    "homeAway": "Away",
+    "competition": "Shield",
+    "goalsFor": 1,
+    "goalsAgainst": 2,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-03-15",
+    "opposition": "Junior Reds Spartans",
+    "homeAway": "Home",
+    "competition": "League",
+    "goalsFor": 1,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-03-22",
+    "opposition": "Eversley Rangers White",
+    "homeAway": "Home",
+    "competition": "Shield",
+    "goalsFor": 0,
+    "goalsAgainst": 3,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-03-29",
+    "opposition": "Meridian Valley Youth",
+    "homeAway": "Home",
+    "competition": "Shield",
+    "goalsFor": 4,
+    "goalsAgainst": 2,
+    "result": "Win"
+  },
+  {
+    "date": "2026-04-12",
+    "opposition": "Punjab United",
+    "homeAway": "Away",
+    "competition": "Shield",
+    "goalsFor": 1,
+    "goalsAgainst": 5,
+    "result": "Loss"
+  },
+  {
+    "date": "2026-04-19",
+    "opposition": "Crayford Arrows",
+    "homeAway": "Away",
+    "competition": "Friendly",
+    "goalsFor": 5,
+    "goalsAgainst": 1,
+    "result": "Win"
+  },
+  {
+    "date": "2026-05-03",
+    "opposition": "Slade Green Knights (Abandoned)",
+    "homeAway": "Away",
+    "competition": "Friendly",
+    "goalsFor": 0,
+    "goalsAgainst": 0,
+    "result": "X"
+  },
+  {
+    "date": "2026-05-10",
+    "opposition": "Dason U18",
+    "homeAway": "Home",
+    "competition": "Friendly",
+    "goalsFor": 5,
+    "goalsAgainst": 0,
+    "result": "Win"
+  },
+  {
+    "date": "2026-05-24",
+    "opposition": "Slade Green Knights",
+    "homeAway": "Away",
+    "competition": "League",
+    "goalsFor": 4,
+    "goalsAgainst": 2,
+    "result": "Win"
+  }
+]
