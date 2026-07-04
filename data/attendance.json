@@ -1,5 +1,1692 @@
 {
   "team": "Welling United Red OBDSFL",
   "season": "2026/27",
-  "sessions": []
+  "sessions": [
+    {
+      "sessionKey": "2026-07-02-match-away-5dc5911c",
+      "sessionId": "5dc5911c-cc80-469f-ad3f-1bc4e72a1041",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Away",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T12:17:21.08149+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "No Show",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-home-de5a9685",
+      "sessionId": "de5a9685-a099-4f83-abfc-bf8809b72918",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Home",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:07:49.393194+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Present",
+          "feePaid": true,
+          "paymentStatus": "Paid",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Late",
+          "feePaid": false,
+          "paymentStatus": "Not Paid",
+          "latePayment": true,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-away-50918a11",
+      "sessionId": "50918a11-f9f4-47c1-a57c-931d59b6d46e",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Away",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:14:22.968099+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "No Show",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-away-5f7d0ae5",
+      "sessionId": "5f7d0ae5-b759-427d-8318-274cbdff0753",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Away",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:22:54.237707+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "No Show",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-away-ac9bd09e",
+      "sessionId": "ac9bd09e-b193-47c6-8bea-2d877be63274",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Away",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:28:22.275703+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-away-ae4130e3",
+      "sessionId": "ae4130e3-ed54-447c-90c0-141c91d00ffc",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Away",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:31:27.851793+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Present",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Late",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "No Show",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-home-406f5af1",
+      "sessionId": "406f5af1-6e07-4084-a483-6fbd8d755829",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Home",
+      "submittedBy": null,
+      "submittedAt": "2026-07-02T13:42:24.237543+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Present",
+          "feePaid": true,
+          "paymentStatus": "Paid",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Late",
+          "feePaid": false,
+          "paymentStatus": "Not Paid",
+          "latePayment": true,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-02-match-home-453d1987",
+      "sessionId": "453d1987-ae2a-4688-8012-7151572e8551",
+      "date": "2026-07-02",
+      "type": "Match",
+      "venue": "Home",
+      "submittedBy": "Dan",
+      "submittedAt": "2026-07-02T18:33:27.964237+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Late",
+          "feePaid": false,
+          "paymentStatus": "Not Paid",
+          "latePayment": true,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Late",
+          "feePaid": true,
+          "paymentStatus": "Paid",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Rotated",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Injured",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unavailable",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "No Show",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Rotated",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    },
+    {
+      "sessionKey": "2026-07-04-match-home-331b4a2f",
+      "sessionId": "331b4a2f-6433-41f6-b39e-cc0f9a04b85f",
+      "date": "2026-07-04",
+      "type": "Match",
+      "venue": "Home",
+      "submittedBy": "John",
+      "submittedAt": "2026-07-04T07:09:38.29013+00:00",
+      "records": [
+        {
+          "playerId": "alf-m",
+          "displayName": "Alf M",
+          "status": "Rotated",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alfie F",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "bailey-s",
+          "displayName": "Bailey",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "brad-e",
+          "displayName": "Brad",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "callum-c",
+          "displayName": "Callum",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ethan-o",
+          "displayName": "Ethan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "freddie-f",
+          "displayName": "Freddie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "george-h",
+          "displayName": "George",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jamie-s",
+          "displayName": "Jamie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jay-p",
+          "displayName": "Jay",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "joe-g",
+          "displayName": "Joe",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "josh-m",
+          "displayName": "Josh",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "jude-g",
+          "displayName": "Jude",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kalan-w",
+          "displayName": "Kalan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "kazeem-k",
+          "displayName": "Kazeem",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-d",
+          "displayName": "Keiran D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "keiran-r",
+          "displayName": "Keiran R",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "liam-s",
+          "displayName": "Liam",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "louie-j",
+          "displayName": "Louie",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "rocco-b",
+          "displayName": "Rocco",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-d",
+          "displayName": "Ronnie D",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ronnie-t",
+          "displayName": "Ronnie T",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryan-b",
+          "displayName": "Ryan",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "ryeley-d",
+          "displayName": "Ryeley",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        },
+        {
+          "playerId": "will-b",
+          "displayName": "Will",
+          "status": "Unmarked",
+          "latePayment": false,
+          "source": "App"
+        }
+      ]
+    }
+  ]
 }
