@@ -1,24 +1,137 @@
 [
-  "Alf M",
-  "Alfie F",
-  "Bailey",
-  "Brad",
-  "Callum",
-  "Danny",
-  "George",
-  "Harley",
-  "Jamie",
-  "Jay",
-  "Joe",
-  "Josh",
-  "Jude",
-  "Kalan",
-  "Kieran D",
-  "Kieran R",
-  "Liam",
-  "Louie",
-  "Ronnie D",
-  "Ronnie T",
-  "Ryeley",
-  "Will"
+  {
+    "id": "alf-morris",
+    "displayName": "Alf Morris",
+    "active": false
+  },
+  {
+    "id": "alfie-ferrari",
+    "displayName": "Alfie Ferrari",
+    "active": false
+  },
+  {
+    "id": "bailey-smith",
+    "displayName": "Bailey Smith",
+    "active": false
+  },
+  {
+    "id": "brad-eccott",
+    "displayName": "Brad Eccott",
+    "active": false
+  },
+  {
+    "id": "callum-cripps",
+    "displayName": "Callum Cripps",
+    "active": false
+  },
+  {
+    "id": "danny-grace",
+    "displayName": "Danny Grace",
+    "active": false
+  },
+  {
+    "id": "ethan",
+    "displayName": "Ethan",
+    "active": false
+  },
+  {
+    "id": "freddie",
+    "displayName": "Freddie",
+    "active": false
+  },
+  {
+    "id": "george-hickson",
+    "displayName": "George Hickson",
+    "active": false
+  },
+  {
+    "id": "jamie-selby",
+    "displayName": "Jamie Selby",
+    "active": false
+  },
+  {
+    "id": "jay-penniall",
+    "displayName": "Jay Penniall",
+    "active": false
+  },
+  {
+    "id": "joe-gallagher",
+    "displayName": "Joe Gallagher",
+    "active": false
+  },
+  {
+    "id": "josh-miah",
+    "displayName": "Josh Miah",
+    "active": false
+  },
+  {
+    "id": "jude-ginno",
+    "displayName": "Jude Ginno",
+    "active": false
+  },
+  {
+    "id": "kalan-wheatley",
+    "displayName": "Kalan Wheatley",
+    "active": false
+  },
+  {
+    "id": "kazeem",
+    "displayName": "Kazeem",
+    "active": false
+  },
+  {
+    "id": "keiran-donovan",
+    "displayName": "Keiran Donovan",
+    "active": false
+  },
+  {
+    "id": "keiran-rawlins",
+    "displayName": "Keiran Rawlins",
+    "active": false
+  },
+  {
+    "id": "liam-shelbourne",
+    "displayName": "Liam Shelbourne",
+    "active": false
+  },
+  {
+    "id": "louie-jones",
+    "displayName": "Louie Jones",
+    "active": false
+  },
+  {
+    "id": "rocco",
+    "displayName": "Rocco",
+    "active": false
+  },
+  {
+    "id": "ronnie-davies",
+    "displayName": "Ronnie Davies",
+    "active": false
+  },
+  {
+    "id": "ronnie-tucker",
+    "displayName": "Ronnie Tucker",
+    "active": false
+  },
+  {
+    "id": "ryan-baillie",
+    "displayName": "Ryan Baillie",
+    "active": false
+  },
+  {
+    "id": "ryeley-doolan",
+    "displayName": "Ryeley Doolan",
+    "active": false
+  },
+  {
+    "id": "will-beecham",
+    "displayName": "Will Beecham",
+    "active": false
+  },
+  {
+    "id": "26",
+    "displayName": 26,
+    "active": false
+  }
 ]

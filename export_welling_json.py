@@ -1,190 +1,286 @@
-from pathlib import Path
+"""
+Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.
+
+Option A output: separate JSON files in ./data/
+- players.json
+- matches.json
+- goals.json
+- assists.json
+- events.json
+- attendance.json
+
+How to run from the dashboard repo folder:
+    python export_welling_json.py
+
+Requirements:
+    pip install openpyxl
+
+Expected workbook filename in the same folder:
+    Welling United Red OBDSFL 26-27.xlsx
+"""
+
+from __future__ import annotations
+
 import json
-from datetime import datetime, date
-import openpyxl
+import re
+from collections import defaultdict
+from datetime import date, datetime
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional
 
-INPUT_FILE = Path("Welling United Red OBDSFL 26-27.xlsx")
-OUTPUT_DIR = Path("data")
+from openpyxl import load_workbook
+from openpyxl.utils import range_boundaries
+
+TEAM = "Welling United Red OBDSFL"
+SEASON = "2026/27"
+WORKBOOK_NAME = "Welling United Red OBDSFL 26-27.xlsx"
+DATA_DIR = Path("data")
+
+# Columns to exclude from public player JSON. Keep contact details in Excel only.
+PRIVATE_PLAYER_COLUMNS = {"number", "email"}
 
 
-def clean_value(value):
+def slugify(value: Any) -> str:
+    text = str(value or "").strip().lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return text.strip("-")
+
+
+def clean_value(value: Any) -> Any:
+    """Convert Excel values into JSON-safe values."""
+    if value is None:
+        return None
     if isinstance(value, datetime):
-        return value.date().isoformat()
+        # Pure Excel dates often arrive as midnight datetimes.
+        if value.time().isoformat() == "00:00:00":
+            return value.date().isoformat()
+        return value.isoformat()
     if isinstance(value, date):
         return value.isoformat()
-    if value in ("", None):
-        return None
+    if isinstance(value, str):
+        value = value.strip()
+        return value if value != "" else None
     return value
 
 
-def safe_int(value):
-    try:
-        return int(value or 0)
-    except (TypeError, ValueError):
-        return 0
-
-
-def attendance_value(value):
-    if value is True:
-        return "Y"
-    if value is False or value is None:
+def camel_key(header: Any) -> str:
+    """Turn Excel headers into predictable camelCase JSON keys."""
+    text = str(header or "").strip()
+    text = text.replace("/", " ").replace("-", " ")
+    parts = re.findall(r"[A-Za-z0-9]+", text)
+    if not parts:
         return ""
-    return str(value).strip()
+    first = parts[0].lower()
+    rest = [p[:1].upper() + p[1:].lower() for p in parts[1:]]
+    key = first + "".join(rest)
+    replacements = {
+        "id": "id",
+        "displayname": "displayName",
+        "playerid": "playerId",
+        "sessionid": "sessionId",
+        "sessionkey": "sessionKey",
+        "sessiondate": "sessionDate",
+        "sessiontype": "sessionType",
+        "feepaid": "feePaid",
+        "paymentstatus": "paymentStatus",
+        "latepayment": "latePayment",
+        "submittedby": "submittedBy",
+        "submittedat": "submittedAt",
+        "homeaway": "venue",
+        "goalsfor": "goalsFor",
+        "goalsagainst": "goalsAgainst",
+    }
+    return replacements.get(key, key)
 
 
-def get_players(wb):
-    ws = wb["Squad"]
+def table_rows(workbook_path: Path, sheet_name: str, table_name: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Read an Excel table into a list of dictionaries."""
+    wb = load_workbook(workbook_path, data_only=True)
+    if sheet_name not in wb.sheetnames:
+        return []
+
+    ws = wb[sheet_name]
+    if table_name is None:
+        if not ws.tables:
+            return []
+        table_name = next(iter(ws.tables.keys()))
+
+    if table_name not in ws.tables:
+        return []
+
+    table = ws.tables[table_name]
+    min_col, min_row, max_col, max_row = range_boundaries(table.ref)
+    headers = [clean_value(ws.cell(min_row, col).value) for col in range(min_col, max_col + 1)]
+    keys = [camel_key(header) for header in headers]
+
+    rows: List[Dict[str, Any]] = []
+    for row_num in range(min_row + 1, max_row + 1):
+        row: Dict[str, Any] = {}
+        has_data = False
+        for col_num, key in zip(range(min_col, max_col + 1), keys):
+            value = clean_value(ws.cell(row_num, col_num).value)
+            row[key] = value
+            if value not in (None, ""):
+                has_data = True
+        if has_data:
+            rows.append(row)
+    return rows
+
+
+def write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"Wrote {path}")
+
+
+def export_players(workbook_path: Path) -> List[Dict[str, Any]]:
+    rows = table_rows(workbook_path, "Squad", "Squad")
     players = []
+    for row in rows:
+        # Skip blank/total rows and keep contact details out of public JSON.
+        player_id = row.get("id") or slugify(row.get("displayName") or row.get("name"))
+        display_name = row.get("displayName") or row.get("name")
+        if not player_id or not display_name:
+            continue
 
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        first_name = row[1]
-        likely = row[7]
+        active_value = row.get("active")
+        status_value = str(row.get("status") or "").strip().lower()
+        active = bool(active_value) and status_value != "left"
 
-        if first_name and str(likely).upper() in ("Y", "Q", "N"):
-            players.append(str(first_name).strip())
-
+        players.append({
+            "id": player_id,
+            "displayName": display_name,
+            "active": active,
+        })
     return players
 
 
-def export_matches(wb):
-    ws = wb["Fixtures"]
-    rows = []
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        match_date = clean_value(row[0])
-        opposition = row[2]
-
-        if not match_date:
+def export_matches(workbook_path: Path) -> List[Dict[str, Any]]:
+    rows = table_rows(workbook_path, "Fixtures", "Fixtures")
+    matches = []
+    for row in rows:
+        if not row.get("date") and not row.get("opposition"):
             continue
-
-        rows.append({
-            "date": match_date,
-            "opposition": "" if opposition in (None, 0) else opposition,
-            "competition": "" if row[3] in (None, 0) else row[3],
-            "homeAway": "" if row[4] in (None, 0) else row[4],
-            "postponed": bool(row[5]),
-            "goalsFor": safe_int(row[6]),
-            "goalsAgainst": safe_int(row[7]),
-            "result": "" if row[8] in (None, 0) else row[8],
+        match_id = slugify(f"{row.get('date')}-{row.get('opposition')}")
+        matches.append({
+            "id": match_id,
+            "date": row.get("date"),
+            "day": row.get("day"),
+            "opposition": row.get("opposition"),
+            "competition": row.get("competition"),
+            "venue": row.get("venue"),
+            "postponed": bool(row.get("postponed")) if row.get("postponed") is not None else False,
+            "goalsFor": row.get("goalsFor"),
+            "goalsAgainst": row.get("goalsAgainst"),
+            "result": row.get("result"),
         })
+    return matches
 
-    return rows
 
-
-def export_player_stat_sheet(wb, sheet_name, key_name):
-    ws = wb[sheet_name]
-    headers = [cell.value for cell in ws[1]]
-    players = headers[2:-1]
-    rows = []
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        match_date = clean_value(row[0])
-        opposition = row[1]
-
-        if not match_date:
+def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: str) -> List[Dict[str, Any]]:
+    """Export wide match/player tables such as Goals, Assists and Events into row records."""
+    rows = table_rows(workbook_path, sheet_name, sheet_name)
+    output = []
+    ignored = {"date", "opposition", "count"}
+    for row in rows:
+        date_value = row.get("date")
+        opposition = row.get("opposition")
+        if not date_value and not opposition:
             continue
-
-        player_values = {}
-
-        for player, value in zip(players, row[2:-1]):
-            if player:
-                player_values[str(player).strip()] = safe_int(value)
-
-        rows.append({
-            "date": match_date,
-            "opposition": "" if opposition in (None, 0) else opposition,
-            key_name: player_values
+        match_id = slugify(f"{date_value}-{opposition}")
+        players: Dict[str, Any] = {}
+        for key, value in row.items():
+            if key in ignored:
+                continue
+            if value not in (None, "", 0):
+                players[key] = value
+        output.append({
+            "matchId": match_id,
+            "date": date_value,
+            "opposition": opposition,
+            output_key: players,
         })
+    return output
 
-    return rows
+
+def yes_no_to_bool(value: Any) -> Optional[bool]:
+    if value is None:
+        return None
+    text = str(value).strip().lower()
+    if text in {"yes", "true", "1", "paid"}:
+        return True
+    if text in {"no", "false", "0", "not paid"}:
+        return False
+    return None
 
 
-def export_events(wb):
-    ws = wb["Events"]
-    headers = [cell.value for cell in ws[1]]
-    players = headers[2:]
-    rows = []
+def export_attendance(workbook_path: Path) -> Dict[str, Any]:
+    rows = table_rows(workbook_path, "AttendanceRecords", "AttendanceRecords")
 
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        event_date = clean_value(row[0])
-        opposition = row[1]
-
-        if not event_date:
+    sessions: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        session_key = row.get("sessionKey")
+        player_id = row.get("playerId")
+        display_name = row.get("displayName")
+        status = row.get("status")
+        if not session_key or not player_id or not status:
             continue
 
-        events = {}
-
-        for player, value in zip(players, row[2:]):
-            if player:
-                events[str(player).strip()] = "" if value in (None, 0) else str(value).strip()
-
-        rows.append({
-            "date": event_date,
-            "opposition": "" if opposition in (None, 0) else opposition,
-            "events": events
-        })
-
-    return rows
-
-
-def export_attendance_sheet(wb, sheet_name, opposition_column=True):
-    ws = wb[sheet_name]
-    headers = [cell.value for cell in ws[1]]
-
-    player_start_col = 3
-    player_end_col = len(headers) - 1
-
-    players = headers[player_start_col:player_end_col]
-    rows = []
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        session_date = clean_value(row[0])
-
-        if not session_date:
-            continue
-
-        attendance = {}
-
-        for player, value in zip(players, row[player_start_col:player_end_col]):
-            if player:
-                attendance[str(player).strip()] = attendance_value(value)
+        if session_key not in sessions:
+            sessions[session_key] = {
+                "sessionKey": session_key,
+                "sessionId": row.get("sessionId"),
+                "date": row.get("sessionDate"),
+                "type": row.get("sessionType"),
+                "venue": row.get("venue"),
+                "submittedBy": row.get("submittedBy"),
+                "submittedAt": row.get("submittedAt"),
+                "records": [],
+            }
 
         record = {
-            "date": session_date,
-            "attendance": attendance,
-            "count": safe_int(row[player_end_col])
+            "recordKey": row.get("recordKey"),
+            "playerId": player_id,
+            "displayName": display_name,
+            "status": status,
+            "feePaid": yes_no_to_bool(row.get("feePaid")),
+            "paymentStatus": row.get("paymentStatus"),
+            "latePayment": yes_no_to_bool(row.get("latePayment")),
+            "source": row.get("source"),
         }
+        # Remove empty optional values to keep JSON tidy.
+        record = {k: v for k, v in record.items() if v is not None}
+        sessions[session_key]["records"].append(record)
 
-        if opposition_column:
-            record["opposition"] = "" if row[2] in (None, 0) else row[2]
-        else:
-            record["session"] = "" if row[2] in (None, 0) else row[2]
+    ordered_sessions = sorted(
+        sessions.values(),
+        key=lambda session: (session.get("date") or "", session.get("submittedAt") or ""),
+    )
 
-        rows.append(record)
-
-    return rows
-
-
-def write_json(filename, data):
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    path = OUTPUT_DIR / filename
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"Exported {path}")
+    return {
+        "team": TEAM,
+        "season": SEASON,
+        "sessions": ordered_sessions,
+    }
 
 
-def export():
-    wb = openpyxl.load_workbook(INPUT_FILE, data_only=True)
+def main() -> None:
+    root = Path(__file__).resolve().parent
+    workbook_path = root / WORKBOOK_NAME
+    if not workbook_path.exists():
+        raise FileNotFoundError(f"Workbook not found: {workbook_path}")
 
-    write_json("players.json", get_players(wb))
-    write_json("matches.json", export_matches(wb))
-    write_json("goals.json", export_player_stat_sheet(wb, "Goals", "goals"))
-    write_json("assists.json", export_player_stat_sheet(wb, "Assists", "assists"))
-    write_json("events.json", export_events(wb))
-    write_json("match-attendance.json", export_attendance_sheet(wb, "Match Attendance", True))
-    write_json("training-attendance.json", export_attendance_sheet(wb, "Training Attendance", False))
+    data_dir = root / DATA_DIR
 
-    print("Export complete.")
+    write_json(data_dir / "players.json", export_players(workbook_path))
+    write_json(data_dir / "matches.json", export_matches(workbook_path))
+    write_json(data_dir / "goals.json", export_wide_player_stats(workbook_path, "Goals", "goals"))
+    write_json(data_dir / "assists.json", export_wide_player_stats(workbook_path, "Assists", "assists"))
+    write_json(data_dir / "events.json", export_wide_player_stats(workbook_path, "Events", "events"))
+    write_json(data_dir / "attendance.json", export_attendance(workbook_path))
+
+    print("Done. Dashboard JSON files updated.")
 
 
 if __name__ == "__main__":
-    export()
+    main()
