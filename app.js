@@ -42,13 +42,14 @@ function safeNumber(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
 }
+
 function playerName(player) {
   if (typeof player === "string") return player;
   return player?.displayName || player?.name || player?.firstName || player?.id || "";
 }
 
 function dashboardPlayers() {
-  return (dashboardPlayers() || [])
+  return (store.players || [])
     .map(playerName)
     .filter(Boolean);
 }
@@ -101,7 +102,7 @@ async function loadData() {
   store.goals = await getJson("goals");
   store.assists = await getJson("assists");
   store.events = await getJson("events");
-  dashboardPlayers() = await getJson("players");
+  store.players = await getJson("players");
 
   // New combined attendance export from Excel AttendanceRecords table.
   // This replaces the older match-attendance.json and training-attendance.json files.
@@ -686,7 +687,7 @@ function renderGoals() {
   drawBar(
     "goalsByPlayer",
     "goalsByPlayerChart",
-   dashboardPlayers(),
+    dashboardPlayers(),
     goalTotals(filteredGoals),
     "rgba(37,99,235,.78)"
   );
@@ -694,7 +695,7 @@ function renderGoals() {
   drawBar(
     "assistsByPlayer",
     "assistsByPlayerChart",
-   dashboardPlayers(),
+    dashboardPlayers(),
     assistTotals(filteredAssists),
     "rgba(56,189,248,.82)"
   );
