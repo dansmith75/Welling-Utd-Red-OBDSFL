@@ -42,6 +42,16 @@ function safeNumber(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
 }
+function playerName(player) {
+  if (typeof player === "string") return player;
+  return player?.displayName || player?.name || player?.firstName || player?.id || "";
+}
+
+function dashboardPlayers() {
+  return (dashboardPlayers() || [])
+    .map(playerName)
+    .filter(Boolean);
+}
 
 function formatDateUK(dateValue) {
   if (!dateValue) return "";
@@ -91,9 +101,13 @@ async function loadData() {
   store.goals = await getJson("goals");
   store.assists = await getJson("assists");
   store.events = await getJson("events");
-  store.matchAttendance = await getJson("match-attendance");
-  store.trainingAttendance = await getJson("training-attendance");
-  store.players = await getJson("players");
+  dashboardPlayers() = await getJson("players");
+
+  // New combined attendance export from Excel AttendanceRecords table.
+  // This replaces the older match-attendance.json and training-attendance.json files.
+  store.attendance = await getJson("attendance");
+  store.matchAttendance = legacyAttendanceRows("Match");
+  store.trainingAttendance = legacyAttendanceRows("Training");
 
   await loadGalleryImages();
 }
@@ -234,24 +248,113 @@ function drawLine(name, canvasId, labels, data) {
 }
 
 function goalTotals(rows) {
-  return store.players.map(player =>
+  return dashboardPlayers().map(player =>
     rows.reduce((sum, row) => sum + safeNumber(row.goals?.[player]), 0)
   );
 }
 
 function assistTotals(rows) {
-  return store.players.map(player =>
+  return dashboardPlayers().map(player =>
     rows.reduce((sum, row) => sum + safeNumber(row.assists?.[player]), 0)
   );
 }
 
 function attendanceTotals(rows) {
-  return store.players.map(player =>
+  return dashboardPlayers().map(player =>
     rows.reduce((sum, row) => {
       const value = String(row.attendance?.[player] || "").toUpperCase();
       return sum + (value === "Y" ? 1 : 0);
     }, 0)
   );
+}
+
+
+function normaliseText(value) {
+  return String(value ?? "").trim().toLowerCase();
+}
+
+function isAttendancePresent(status) {
+  const value = normaliseText(status);
+  return value === "present" || value === "late";
+}
+
+function isAttendanceInjured(status) {
+  return normaliseText(status) === "injured";
+}
+
+function attendanceSessions(type = null) {
+  const sessions = store.attendance?.sessions || [];
+
+  if (!type) return sessions;
+
+  return sessions.filter(session =>
+    normaliseText(session.type) === normaliseText(type)
+  );
+}
+
+function attendancePlayerMatches(record, player) {
+  const playerText = normaliseText(player);
+  return (
+    normaliseText(record.displayName) === playerText ||
+    normaliseText(record.playerName) === playerText ||
+    normaliseText(record.playerId) === playerText
+  );
+}
+
+function legacyStatusCode(status) {
+  if (isAttendancePresent(status)) return "Y";
+  if (isAttendanceInjured(status)) return "I";
+  return "";
+}
+
+function legacyAttendanceRows(type) {
+  return attendanceSessions(type).map(session => {
+    const attendance = {};
+    let count = 0;
+
+    (session.records || []).forEach(record => {
+      const playerName = record.displayName || record.playerName || record.playerId;
+      const code = legacyStatusCode(record.status);
+
+      if (playerName) attendance[playerName] = code;
+      if (isAttendancePresent(record.status)) count += 1;
+    });
+
+    return {
+      date: session.date,
+      sessionKey: session.sessionKey,
+      sessionId: session.sessionId,
+      type: session.type,
+      venue: session.venue,
+      submittedBy: session.submittedBy,
+      submittedAt: session.submittedAt,
+      count,
+      attendance
+    };
+  });
+}
+
+function attendanceRecordsForPlayer(player, type = null) {
+  const records = [];
+
+  attendanceSessions(type).forEach(session => {
+    (session.records || []).forEach(record => {
+      if (!attendancePlayerMatches(record, player)) return;
+
+      records.push({
+        ...record,
+        date: session.date,
+        sessionKey: session.sessionKey,
+        sessionId: session.sessionId,
+        type: session.type,
+        venue: session.venue,
+        submittedBy: session.submittedBy,
+        submittedAt: session.submittedAt
+      });
+    });
+  });
+
+  return records.sort((a, b) => String(a.date).localeCompare(String(b.date)));
 }
 
 function matchStats(matches) {
@@ -361,7 +464,7 @@ function renderOverview() {
   const trainingAttendances = store.trainingAttendance.reduce((s, a) => s + safeNumber(a.count), 0);
   const averageTrainingFigure = trainingSessions > 0 ? trainingAttendances / trainingSessions : 0;
 
-  const squadSize = store.players.length;
+  const squadSize = dashboardPlayers().length;
   const averageTrainingPercentage = trainingSessions > 0 && squadSize > 0
     ? (trainingAttendances / (trainingSessions * squadSize)) * 100
     : 0;
@@ -583,7 +686,7 @@ function renderGoals() {
   drawBar(
     "goalsByPlayer",
     "goalsByPlayerChart",
-    store.players,
+   dashboardPlayers(),
     goalTotals(filteredGoals),
     "rgba(37,99,235,.78)"
   );
@@ -591,7 +694,7 @@ function renderGoals() {
   drawBar(
     "assistsByPlayer",
     "assistsByPlayerChart",
-    store.players,
+   dashboardPlayers(),
     assistTotals(filteredAssists),
     "rgba(56,189,248,.82)"
   );
@@ -603,7 +706,7 @@ function renderAttendance() {
   drawBar(
     "matchAttendance",
     "matchAttendanceChart",
-    store.players,
+    dashboardPlayers(),
     attendanceTotals(store.matchAttendance),
     "rgba(37,99,235,.78)"
   );
@@ -611,7 +714,7 @@ function renderAttendance() {
   drawBar(
     "trainingAttendance",
     "trainingAttendanceChart",
-    store.players,
+    dashboardPlayers(),
     attendanceTotals(store.trainingAttendance),
     "rgba(16,185,129,.82)"
   );
@@ -719,9 +822,8 @@ function getCardCounts(player) {
 function getInjuryDates(player) {
   const dates = new Set();
 
-  [...store.matchAttendance, ...store.trainingAttendance].forEach(row => {
-    const value = String(row.attendance?.[player] || "").toUpperCase();
-    if (value === "I") dates.add(row.date);
+  attendanceRecordsForPlayer(player).forEach(record => {
+    if (isAttendanceInjured(record.status)) dates.add(record.date);
   });
 
   return Array.from(dates).sort();
@@ -729,8 +831,9 @@ function getInjuryDates(player) {
 
 function renderPlayerButtons() {
   const grid = document.getElementById("playerGrid");
+  const players = dashboardPlayers();
 
-  grid.innerHTML = store.players.map(player => `
+  grid.innerHTML = players.map(player => `
     <button class="player-button" data-player="${player}">${player}</button>
   `).join("");
 
@@ -822,9 +925,15 @@ if (type === "assists") {
   if (type === "matchAttendance") {
     title = `${player} — Match Attendance`;
 
-    const games = store.matchAttendance
-      .filter(row => String(row.attendance?.[player] || "").toUpperCase() === "Y")
-      .map(row => `<li>${formatDateUK(row.date)} vs ${row.opposition}</li>`);
+    const games = attendanceRecordsForPlayer(player, "Match")
+      .filter(record => isAttendancePresent(record.status))
+      .map(record => `
+        <li>
+          ${formatDateUK(record.date)}
+          ${record.venue ? ` — ${record.venue}` : ""}
+          ${record.status ? ` — ${record.status}` : ""}
+        </li>
+      `);
 
     content = games.length ? `<ul>${games.join("")}</ul>` : `<p>No match attendances recorded for ${player}.</p>`;
   }
@@ -832,9 +941,9 @@ if (type === "assists") {
   if (type === "trainingAttendance") {
     title = `${player} — Training Attendance`;
 
-    const sessions = store.trainingAttendance
-      .filter(row => String(row.attendance?.[player] || "").toUpperCase() === "Y")
-      .map(row => `<li>${formatDateUK(row.date)}</li>`);
+    const sessions = attendanceRecordsForPlayer(player, "Training")
+      .filter(record => isAttendancePresent(record.status))
+      .map(record => `<li>${formatDateUK(record.date)}${record.status ? ` — ${record.status}` : ""}</li>`);
 
     content = sessions.length ? `<ul>${sessions.join("")}</ul>` : `<p>No training attendances recorded for ${player}.</p>`;
   }
@@ -879,7 +988,7 @@ if (type === "assists") {
 function renderPlayers() {
   renderPlayerButtons();
 
-  if (!selectedPlayer) selectedPlayer = store.players[0];
+  if (!selectedPlayer) selectedPlayer = dashboardPlayers()[0];
 
   renderPlayerProfile(selectedPlayer);
 }
