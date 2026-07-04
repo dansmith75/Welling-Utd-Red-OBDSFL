@@ -1,4 +1,4 @@
-"""
+r"""
 Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.
 
 Option A output: separate JSON files in ./data/
@@ -12,16 +12,25 @@ Option A output: separate JSON files in ./data/
 How to run from the dashboard repo folder:
     python export_welling_json.py
 
+Optional workbook override:
+    python export_welling_json.py --workbook "C:\Users\dansm\OneDrive\Documents\Dan\Football\Welling United Red OBDSFL 26-27.xlsx"
+
+Or set an environment variable:
+    setx WELLING_WORKBOOK_PATH "C:\Users\dansm\OneDrive\Documents\Dan\Football\Welling United Red OBDSFL 26-27.xlsx"
+
 Requirements:
     pip install openpyxl
 
-Expected workbook filename in the same folder:
-    Welling United Red OBDSFL 26-27.xlsx
+Recommended setup:
+- Keep the Excel workbook in OneDrive as the editable source of truth.
+- Keep only the generated JSON files in the GitHub dashboard repo.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
+import os
 import re
 from collections import defaultdict
 from datetime import date, datetime
@@ -35,6 +44,56 @@ TEAM = "Welling United Red OBDSFL"
 SEASON = "2026/27"
 WORKBOOK_NAME = "Welling United Red OBDSFL 26-27.xlsx"
 DATA_DIR = Path("data")
+ENV_WORKBOOK_PATH = "WELLING_WORKBOOK_PATH"
+
+
+def candidate_workbook_paths(script_root: Path) -> List[Path]:
+    """Possible workbook locations, in priority order."""
+    candidates: List[Path] = []
+
+    env_path = os.environ.get(ENV_WORKBOOK_PATH)
+    if env_path:
+        candidates.append(Path(env_path).expanduser())
+
+    # Old/default behaviour: workbook in the dashboard repo root.
+    candidates.append(script_root / WORKBOOK_NAME)
+
+    # Recommended behaviour: workbook kept outside GitHub in OneDrive.
+    candidates.append(Path.home() / "OneDrive" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
+    candidates.append(Path.home() / "OneDrive - Personal" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
+    candidates.append(Path.home() / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
+
+    # Remove duplicates while preserving order.
+    unique: List[Path] = []
+    seen = set()
+    for path in candidates:
+        resolved_key = str(path)
+        if resolved_key not in seen:
+            unique.append(path)
+            seen.add(resolved_key)
+
+    return unique
+
+
+def resolve_workbook_path(script_root: Path, workbook_arg: Optional[str] = None) -> Path:
+    """Find the workbook, either from --workbook, env var, or known default locations."""
+    if workbook_arg:
+        workbook_path = Path(workbook_arg).expanduser()
+        if workbook_path.exists():
+            return workbook_path
+        raise FileNotFoundError(f"Workbook path from --workbook does not exist: {workbook_path}")
+
+    candidates = candidate_workbook_paths(script_root)
+    for path in candidates:
+        if path.exists():
+            return path
+
+    candidate_text = "\n".join(f"- {path}" for path in candidates)
+    raise FileNotFoundError(
+        "Workbook not found. Checked these locations:\n"
+        f"{candidate_text}\n\n"
+        "Either move the workbook to one of those locations, run with --workbook, or set WELLING_WORKBOOK_PATH."
+    )
 
 # Columns to exclude from public player JSON. Keep contact details in Excel only.
 PRIVATE_PLAYER_COLUMNS = {"number", "email"}
@@ -265,12 +324,24 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent
-    workbook_path = root / WORKBOOK_NAME
-    if not workbook_path.exists():
-        raise FileNotFoundError(f"Workbook not found: {workbook_path}")
+    parser = argparse.ArgumentParser(description="Export Welling dashboard JSON from the Excel workbook.")
+    parser.add_argument(
+        "--workbook",
+        help="Optional full path to the Excel workbook. If omitted, the script checks the repo root, WELLING_WORKBOOK_PATH, and common OneDrive locations.",
+    )
+    parser.add_argument(
+        "--data-dir",
+        default=str(DATA_DIR),
+        help="Output data folder. Default: data",
+    )
+    args = parser.parse_args()
 
-    data_dir = root / DATA_DIR
+    root = Path(__file__).resolve().parent
+    workbook_path = resolve_workbook_path(root, args.workbook)
+    data_dir = root / Path(args.data_dir)
+
+    print(f"Using workbook: {workbook_path}")
+    print(f"Writing JSON to: {data_dir}")
 
     write_json(data_dir / "players.json", export_players(workbook_path))
     write_json(data_dir / "matches.json", export_matches(workbook_path))
