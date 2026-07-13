@@ -1,10 +1,10 @@
 [
   {
-    "id": "2026-09-06-dan",
+    "id": "2026-09-06-sydenham-lions",
     "date": "2026-09-06",
     "day": "2026-09-06",
-    "opposition": "DAN",
-    "competition": null,
+    "opposition": "Sydenham Lions",
+    "competition": "Vic Farrow Cup",
     "venue": null,
     "postponed": false,
     "goalsFor": null,
@@ -84,11 +84,11 @@
     "result": null
   },
   {
-    "id": "2026-10-25-none",
+    "id": "2026-10-25-sydenham-lions",
     "date": "2026-10-25",
     "day": "2026-10-25",
-    "opposition": null,
-    "competition": null,
+    "opposition": "Sydenham Lions",
+    "competition": "Presidents Charity Cup",
     "venue": null,
     "postponed": false,
     "goalsFor": null,
