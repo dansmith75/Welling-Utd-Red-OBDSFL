@@ -1,5 +1,5 @@
 r"""
-Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.
+Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.\n\nExcel remains the source of truth. Attendance export contains football attendance/status data only;\nmonthly player fees are managed separately in the workbook and are not exported as attendance payment data.
 
 Option A output: separate JSON files in ./data/
 - players.json
@@ -199,7 +199,11 @@ def export_players(workbook_path: Path) -> List[Dict[str, Any]]:
         # Skip blank/total rows and keep contact details out of public JSON.
         player_id = row.get("id") or slugify(row.get("displayName") or row.get("name"))
         display_name = row.get("displayName") or row.get("name")
-        if not player_id or not display_name:
+        if (
+            not player_id
+            or not display_name
+            or str(player_id).strip().lower() == "total"
+        ):
             continue
 
         active_value = row.get("active")
@@ -218,7 +222,7 @@ def export_matches(workbook_path: Path) -> List[Dict[str, Any]]:
     rows = table_rows(workbook_path, "Fixtures", "Fixtures")
     matches = []
     for row in rows:
-        if not row.get("date") and not row.get("opposition"):
+        if row.get("opposition") in (None, "", 0, "0"):
             continue
         match_id = slugify(f"{row.get('date')}-{row.get('opposition')}")
         matches.append({
@@ -241,37 +245,41 @@ def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: s
     rows = table_rows(workbook_path, sheet_name, sheet_name)
     output = []
     ignored = {"date", "opposition", "count"}
+
     for row in rows:
         date_value = row.get("date")
         opposition = row.get("opposition")
-        if not date_value and not opposition:
+
+        # Ignore placeholder rows where Excel formulas return 0/blank opposition.
+        if opposition in (None, "", 0, "0"):
             continue
+
         match_id = slugify(f"{date_value}-{opposition}")
         players: Dict[str, Any] = {}
+
         for key, value in row.items():
             if key in ignored:
                 continue
-            if value not in (None, "", 0):
-                players[key] = value
+            if value in (None, "", 0):
+                continue
+
+            # Player columns are expected to use Squad IDs, e.g. joe-g.
+            # camel_key() can remove hyphens, so reconstruct the canonical ID where possible.
+            player_key = str(key)
+            if re.fullmatch(r"[a-z]+[A-Z][A-Za-z0-9]*", player_key):
+                # Convert simple camelCase like joeG -> joe-g.
+                player_key = re.sub(r"([a-z0-9])([A-Z])", r"\1-\2", player_key).lower()
+
+            players[player_key] = value
+
         output.append({
             "matchId": match_id,
             "date": date_value,
             "opposition": opposition,
             output_key: players,
         })
+
     return output
-
-
-def yes_no_to_bool(value: Any) -> Optional[bool]:
-    if value is None:
-        return None
-    text = str(value).strip().lower()
-    if text in {"yes", "true", "1", "paid"}:
-        return True
-    if text in {"no", "false", "0", "not paid"}:
-        return False
-    return None
-
 
 def export_attendance(workbook_path: Path) -> Dict[str, Any]:
     rows = table_rows(workbook_path, "AttendanceRecords", "AttendanceRecords")
@@ -302,9 +310,6 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
             "playerId": player_id,
             "displayName": display_name,
             "status": status,
-            "feePaid": yes_no_to_bool(row.get("feePaid")),
-            "paymentStatus": row.get("paymentStatus"),
-            "latePayment": yes_no_to_bool(row.get("latePayment")),
             "source": row.get("source"),
         }
         # Remove empty optional values to keep JSON tidy.

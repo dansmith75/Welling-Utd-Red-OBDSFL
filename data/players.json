@@ -2,7 +2,7 @@
   {
     "id": "alf-m",
     "displayName": "Alf M",
-    "active": true
+    "active": false
   },
   {
     "id": "alfie-f",
@@ -22,31 +22,56 @@
   {
     "id": "callum-c",
     "displayName": "Callum",
-    "active": true
+    "active": false
   },
   {
-    "id": "danny-g",
-    "displayName": "Danny",
-    "active": false
+    "id": "darren-r",
+    "displayName": "Darren",
+    "active": true
   },
   {
     "id": "ethan-o",
     "displayName": "Ethan",
+    "active": false
+  },
+  {
+    "id": "ezra-w",
+    "displayName": "Ezra",
+    "active": false
+  },
+  {
+    "id": "frank-a",
+    "displayName": "Frank",
     "active": true
   },
   {
     "id": "freddie-f",
     "displayName": "Freddie",
-    "active": true
+    "active": false
   },
   {
     "id": "george-h",
-    "displayName": "George",
+    "displayName": "George H",
+    "active": true
+  },
+  {
+    "id": "george-w",
+    "displayName": "George W",
     "active": true
   },
   {
     "id": "jamie-s",
     "displayName": "Jamie",
+    "active": false
+  },
+  {
+    "id": "jack-g",
+    "displayName": "Jack",
+    "active": false
+  },
+  {
+    "id": "imi-s",
+    "displayName": "Imi",
     "active": true
   },
   {
@@ -77,7 +102,7 @@
   {
     "id": "kazeem-k",
     "displayName": "Kazeem",
-    "active": true
+    "active": false
   },
   {
     "id": "keiran-d",
@@ -87,7 +112,7 @@
   {
     "id": "keiran-r",
     "displayName": "Keiran R",
-    "active": true
+    "active": false
   },
   {
     "id": "liam-s",
@@ -97,6 +122,11 @@
   {
     "id": "louie-j",
     "displayName": "Louie",
+    "active": true
+  },
+  {
+    "id": "morgan-s",
+    "displayName": "Morgan",
     "active": true
   },
   {
@@ -128,10 +158,5 @@
     "id": "will-b",
     "displayName": "Will",
     "active": true
-  },
-  {
-    "id": "26",
-    "displayName": 26,
-    "active": false
   }
 ]

@@ -1,44 +1,87 @@
 [
   {
+    "matchId": "2026-07-31-welling-u18-s",
+    "date": "2026-07-31",
+    "opposition": "Welling U18's",
+    "assists": {}
+  },
+  {
+    "matchId": "2026-08-02-ravensbury-fc",
+    "date": "2026-08-02",
+    "opposition": "Ravensbury FC",
+    "assists": {
+      "liam-s": 1
+    }
+  },
+  {
+    "matchId": "2026-08-09-charity-tournament",
+    "date": "2026-08-09",
+    "opposition": "Charity Tournament",
+    "assists": {
+      "darren-r": 1,
+      "jude-g": 1,
+      "louie-j": 1,
+      "will-b": 2
+    }
+  },
+  {
+    "matchId": "2026-08-16-welling-park-rangers",
+    "date": "2026-08-16",
+    "opposition": "Welling Park Rangers",
+    "assists": {}
+  },
+  {
+    "matchId": "2026-08-23-crayford-arrows",
+    "date": "2026-08-23",
+    "opposition": "Crayford Arrows",
+    "assists": {}
+  },
+  {
+    "matchId": "2026-08-29-welling-saturday-reserves",
+    "date": "2026-08-29",
+    "opposition": "Welling Saturday Reserves",
+    "assists": {}
+  },
+  {
     "matchId": "2026-09-06-sydenham-lions",
     "date": "2026-09-06",
     "opposition": "Sydenham Lions",
     "assists": {}
   },
   {
-    "matchId": "2026-09-13-0",
+    "matchId": "2026-09-13-sydenham-lions",
     "date": "2026-09-13",
-    "opposition": 0,
+    "opposition": "Sydenham Lions",
     "assists": {}
   },
   {
-    "matchId": "2026-09-20-0",
+    "matchId": "2026-09-20-taketime",
     "date": "2026-09-20",
-    "opposition": 0,
+    "opposition": "Taketime",
     "assists": {}
   },
   {
-    "matchId": "2026-09-27-0",
+    "matchId": "2026-09-27-orpington-town",
     "date": "2026-09-27",
-    "opposition": 0,
+    "opposition": "Orpington Town",
     "assists": {}
   },
   {
-    "matchId": "2026-10-04-0",
+    "matchId": "2026-10-04-spitfire-united",
     "date": "2026-10-04",
-    "opposition": 0,
+    "opposition": "Spitfire United",
     "assists": {}
   },
   {
-    "matchId": "2026-10-11-0",
+    "matchId": "2026-10-11-huxley-guards",
     "date": "2026-10-11",
-    "opposition": 0,
+    "opposition": "Huxley Guards",
     "assists": {}
   },
   {
-    "matchId": "2026-10-18-0",
+    "matchId": "2026-10-18-qob",
     "date": "2026-10-18",
-    "opposition": 0,
+    "opposition": "QOB",
     "assists": {}
   },
   {
@@ -48,273 +91,93 @@
     "assists": {}
   },
   {
-    "matchId": "2026-11-01-0",
+    "matchId": "2026-11-01-bexley-athletic",
     "date": "2026-11-01",
-    "opposition": 0,
+    "opposition": "Bexley Athletic",
     "assists": {}
   },
   {
-    "matchId": "2026-11-08-0",
+    "matchId": "2026-11-08-ravensbury-rovers",
     "date": "2026-11-08",
-    "opposition": 0,
+    "opposition": "Ravensbury Rovers",
     "assists": {}
   },
   {
-    "matchId": "2026-11-15-0",
+    "matchId": "2026-11-15-warlingham-warriors",
     "date": "2026-11-15",
-    "opposition": 0,
+    "opposition": "Warlingham Warriors",
     "assists": {}
   },
   {
-    "matchId": "2026-11-22-0",
+    "matchId": "2026-11-22-football-lawyers",
     "date": "2026-11-22",
-    "opposition": 0,
+    "opposition": "Football Lawyers",
     "assists": {}
   },
   {
-    "matchId": "2026-11-29-0",
+    "matchId": "2026-11-29-sydenham-lions",
     "date": "2026-11-29",
-    "opposition": 0,
+    "opposition": "Sydenham Lions",
     "assists": {}
   },
   {
-    "matchId": "2026-12-06-0",
+    "matchId": "2026-12-06-taketime",
     "date": "2026-12-06",
-    "opposition": 0,
+    "opposition": "Taketime",
     "assists": {}
   },
   {
-    "matchId": "2026-12-13-0",
+    "matchId": "2026-12-13-spitfire-united",
     "date": "2026-12-13",
-    "opposition": 0,
+    "opposition": "Spitfire United",
     "assists": {}
   },
   {
-    "matchId": "2026-12-20-0",
+    "matchId": "2026-12-20-huxley-guards",
     "date": "2026-12-20",
-    "opposition": 0,
+    "opposition": "Huxley Guards",
     "assists": {}
   },
   {
-    "matchId": "2026-12-27-0",
+    "matchId": "2026-12-27-qob",
     "date": "2026-12-27",
-    "opposition": 0,
+    "opposition": "QOB",
     "assists": {}
   },
   {
-    "matchId": "2027-01-03-0",
+    "matchId": "2027-01-03-the-warren-development",
     "date": "2027-01-03",
-    "opposition": 0,
+    "opposition": "The Warren Development",
     "assists": {}
   },
   {
-    "matchId": "2027-01-10-0",
+    "matchId": "2027-01-10-bexley-athletic",
     "date": "2027-01-10",
-    "opposition": 0,
+    "opposition": "Bexley Athletic",
     "assists": {}
   },
   {
-    "matchId": "2027-01-17-0",
+    "matchId": "2027-01-17-ravensbury-rovers",
     "date": "2027-01-17",
-    "opposition": 0,
+    "opposition": "Ravensbury Rovers",
     "assists": {}
   },
   {
-    "matchId": "2027-01-24-0",
+    "matchId": "2027-01-24-warlingham-warriors",
     "date": "2027-01-24",
-    "opposition": 0,
+    "opposition": "Warlingham Warriors",
     "assists": {}
   },
   {
-    "matchId": "2027-01-31-0",
+    "matchId": "2027-01-31-football-lawyers",
     "date": "2027-01-31",
-    "opposition": 0,
+    "opposition": "Football Lawyers",
     "assists": {}
   },
   {
-    "matchId": "2027-02-07-0",
+    "matchId": "2027-02-07-orpington-town",
     "date": "2027-02-07",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-02-14-0",
-    "date": "2027-02-14",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-02-21-0",
-    "date": "2027-02-21",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-02-28-0",
-    "date": "2027-02-28",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-03-07-0",
-    "date": "2027-03-07",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-03-14-0",
-    "date": "2027-03-14",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-03-21-0",
-    "date": "2027-03-21",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-03-28-0",
-    "date": "2027-03-28",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-04-04-0",
-    "date": "2027-04-04",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-04-11-0",
-    "date": "2027-04-11",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-04-18-0",
-    "date": "2027-04-18",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-04-25-0",
-    "date": "2027-04-25",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-05-02-0",
-    "date": "2027-05-02",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-05-09-0",
-    "date": "2027-05-09",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-05-16-0",
-    "date": "2027-05-16",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-05-23-0",
-    "date": "2027-05-23",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-05-30-0",
-    "date": "2027-05-30",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-06-06-0",
-    "date": "2027-06-06",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-06-13-0",
-    "date": "2027-06-13",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-06-20-0",
-    "date": "2027-06-20",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-06-27-0",
-    "date": "2027-06-27",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-07-04-0",
-    "date": "2027-07-04",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-07-11-0",
-    "date": "2027-07-11",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-07-18-0",
-    "date": "2027-07-18",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-07-25-0",
-    "date": "2027-07-25",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-08-01-0",
-    "date": "2027-08-01",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-08-08-0",
-    "date": "2027-08-08",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-08-15-0",
-    "date": "2027-08-15",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-08-22-0",
-    "date": "2027-08-22",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "2027-08-29-0",
-    "date": "2027-08-29",
-    "opposition": 0,
-    "assists": {}
-  },
-  {
-    "matchId": "none-total",
-    "date": null,
-    "opposition": "Total",
+    "opposition": "Orpington Town",
     "assists": {}
   }
 ]
