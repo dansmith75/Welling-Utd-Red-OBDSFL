@@ -1,0 +1,78 @@
+name: Sync Welling workbook data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: welling-workbook-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dashboard
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exporter dependency
+        run: python -m pip install --disable-pip-version-check openpyxl
+
+      - name: Download master workbook from OneDrive
+        env:
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_REFRESH_TOKEN: ${{ secrets.MS_REFRESH_TOKEN }}
+          ONEDRIVE_FILE_PATH: "Documents/Dan/Football/Welling United Red OBDSFL 26-27.xlsx"
+          WORKBOOK_OUTPUT: ${{ runner.temp }}/Welling United Red OBDSFL 26-27.xlsx
+        run: python scripts/download_onedrive_workbook.py
+
+      - name: Export workbook to dashboard JSON
+        run: |
+          python export_welling_json.py \
+            --workbook "${{ runner.temp }}/Welling United Red OBDSFL 26-27.xlsx"
+
+      - name: Validate JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          expected = [
+              "players.json",
+              "matches.json",
+              "goals.json",
+              "assists.json",
+              "events.json",
+              "attendance.json",
+          ]
+
+          for name in expected:
+              path = Path("data") / name
+              if not path.exists():
+                  raise SystemExit(f"Missing export: {path}")
+              json.loads(path.read_text(encoding="utf-8"))
+              print(f"OK {path}")
+          PY
+
+      - name: Commit changed dashboard data
+        run: |
+          if git diff --quiet -- data; then
+            echo "No dashboard data changes."
+            exit 0
+          fi
+
+          git config user.name "Welling Data Sync"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          git commit -m "Auto-update Welling data from OneDrive"
+          git push
