@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import subprocess
@@ -22,6 +23,14 @@ def run(args, check=True, capture=False):
         check=check,
         capture_output=capture,
     )
+
+
+def ensure_python_package(import_name: str, pip_name: str | None = None):
+    if importlib.util.find_spec(import_name) is not None:
+        return
+    package = pip_name or import_name
+    print(f"Installing one-time helper: {package}...")
+    run([sys.executable, "-m", "pip", "install", package])
 
 
 def find_workbook() -> Path:
@@ -111,12 +120,30 @@ def match_summary(old, new):
     return lines
 
 
+def sync_supabase(workbook: Path) -> dict:
+    ensure_python_package("xlwings")
+    print("2/7 Pulling Attendance / Matchday submissions from Supabase into Excel...")
+    result = run(
+        [sys.executable, str(ROOT / "sync_supabase_to_excel.py"), str(workbook)],
+        capture=True,
+    )
+    if result.stdout:
+        for line in result.stdout.splitlines():
+            if not line.startswith("SUPABASE_SYNC_SUMMARY="):
+                print(line)
+    marker = "SUPABASE_SYNC_SUMMARY="
+    summary_line = next((line for line in result.stdout.splitlines() if line.startswith(marker)), None)
+    if not summary_line:
+        return {"attendanceRows": 0, "matchdaySessions": 0, "matchdayRows": 0, "warnings": []}
+    return json.loads(summary_line[len(marker):])
+
+
 def main():
     print("\n============================================")
     print(" Welling United Red - Update Website")
     print("============================================\n")
 
-    print("1/6 Syncing latest website code from GitHub...")
+    print("1/7 Syncing latest website code from GitHub...")
     run(["git", "pull", "--ff-only"])
 
     status = run(["git", "status", "--porcelain", "--untracked-files=no"], capture=True).stdout.strip()
@@ -125,17 +152,28 @@ def main():
 
     workbook = find_workbook()
     print(f"\nMaster workbook: {workbook}")
-    print("Tip: save and close Excel before publishing on Windows.\n")
+    print("Save and close Excel before publishing. The updater will safely reopen Excel to reconcile central app submissions.\n")
 
     before = snapshot()
 
-    print("2/6 Exporting Excel to JSON...")
+    sync = sync_supabase(workbook)
+    print("\nSupabase → Excel")
+    print("----------------")
+    print(f"  + Attendance rows imported: {sync.get('attendanceRows', 0)}")
+    print(f"  + Completed Matchdays imported: {sync.get('matchdaySessions', 0)}")
+    print(f"  + Matchday audit rows added: {sync.get('matchdayRows', 0)}")
+    for warning in sync.get("warnings", [])[:20]:
+        print(f"  ! {warning}")
+    if len(sync.get("warnings", [])) > 20:
+        print(f"  ! ...and {len(sync['warnings']) - 20} more import warnings")
+
+    print("\n3/7 Exporting Excel to JSON...")
     try:
         run([sys.executable, str(ROOT / "export_welling_json.py"), "--workbook", str(workbook)])
     except subprocess.CalledProcessError as exc:
-        raise RuntimeError("Excel export failed. If the workbook is open, save and close it, then try again.") from exc
+        raise RuntimeError("Excel export failed. Make sure the workbook is closed, then try again.") from exc
 
-    print("3/6 Validating JSON...")
+    print("4/7 Validating JSON...")
     after = snapshot()
     for name in EXPECTED:
         if after[name] is None:
@@ -143,7 +181,7 @@ def main():
 
     changed = run(["git", "diff", "--name-only", "--", "data"], capture=True).stdout.splitlines()
     if not changed:
-        print("\nNo football-data changes found. Nothing to publish.\n")
+        print("\nNo published football-data changes found. Excel is reconciled and there is nothing to push.\n")
         return
 
     print("\n============================================")
@@ -178,22 +216,23 @@ def main():
     answer = input("\nPublish these updates to GitHub? [Y/N]: ").strip().lower()
     if answer != "y":
         print("\nCancelled. Nothing was committed or pushed.")
-        print("Generated JSON remains local and can be regenerated next time.\n")
+        print("Supabase data has still been safely reconciled into Excel.\n")
         return
 
-    print("\n4/6 Staging changed JSON...")
+    print("\n5/7 Staging changed JSON...")
     run(["git", "add", "data"])
 
-    print("5/6 Committing...")
+    print("6/7 Committing...")
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     run(["git", "commit", "-m", f"Update Welling data {stamp}"])
 
-    print("6/6 Pushing to GitHub...")
+    print("7/7 Pushing to GitHub...")
     run(["git", "push"])
 
     print("\n============================================")
     print(" SUCCESS")
     print("============================================")
+    print("Central Attendance / Matchday submissions reconciled into Excel.")
     print("Dashboard data published.")
     print("Attendance / Matchday will use the same shared squad and fixture feeds.")
     print("GitHub Pages normally updates shortly afterwards.\n")
