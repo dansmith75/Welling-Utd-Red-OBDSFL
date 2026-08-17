@@ -118,12 +118,12 @@
 
       <div class="chart-container">
         <h2 class="chart-title">Assists by Player</h2>
-<div class="chart-scroll">
-  <div class="chart-box">
-    <canvas id="assistsByPlayerChart"></canvas>
-  </div>
-</div>
-        
+        <div class="chart-scroll">
+          <div class="chart-box">
+            <canvas id="assistsByPlayerChart"></canvas>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="attendance" class="page">
@@ -191,5 +191,15 @@
   <div class="visit-counter" id="visitCounter">Visits: 0</div>
 
   <script src="app.js"></script>
+  <script>
+    // Keep inactive/left players in players.json for historical stats, but only
+    // expose the current active squad in dashboard player selectors/charts.
+    dashboardPlayers = function () {
+      return (store.players || [])
+        .filter(player => player && player.active === true)
+        .map(playerName)
+        .filter(Boolean);
+    };
+  </script>
 </body>
 </html>
