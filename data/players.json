@@ -2,32 +2,38 @@
   {
     "id": "alf-m",
     "displayName": "Alf M",
-    "active": false
+    "active": false,
+    "position": "CAM/ST"
   },
   {
     "id": "alfie-f",
     "displayName": "Alfie F",
-    "active": true
+    "active": true,
+    "position": "ST"
   },
   {
     "id": "bailey-s",
     "displayName": "Bailey",
-    "active": true
+    "active": true,
+    "position": "RB"
   },
   {
     "id": "brad-e",
     "displayName": "Brad",
-    "active": true
+    "active": true,
+    "position": "CB"
   },
   {
     "id": "callum-c",
     "displayName": "Callum",
-    "active": false
+    "active": false,
+    "position": "LB,LW,CM"
   },
   {
     "id": "darren-r",
     "displayName": "Darren",
-    "active": true
+    "active": true,
+    "position": "ST"
   },
   {
     "id": "ethan-o",
@@ -42,7 +48,8 @@
   {
     "id": "frank-a",
     "displayName": "Frank",
-    "active": true
+    "active": true,
+    "position": "LW"
   },
   {
     "id": "freddie-f",
@@ -52,17 +59,20 @@
   {
     "id": "george-h",
     "displayName": "George H",
-    "active": true
+    "active": true,
+    "position": "CDM"
   },
   {
     "id": "george-w",
     "displayName": "George W",
-    "active": true
+    "active": true,
+    "position": "CM"
   },
   {
     "id": "jamie-s",
     "displayName": "Jamie",
-    "active": false
+    "active": false,
+    "position": "ST"
   },
   {
     "id": "jack-g",
@@ -72,32 +82,38 @@
   {
     "id": "imi-s",
     "displayName": "Imi",
-    "active": true
+    "active": true,
+    "position": "CM"
   },
   {
     "id": "jay-p",
     "displayName": "Jay",
-    "active": true
+    "active": true,
+    "position": "RW"
   },
   {
     "id": "joe-g",
     "displayName": "Joe",
-    "active": true
+    "active": true,
+    "position": "CDM"
   },
   {
     "id": "josh-m",
     "displayName": "Josh",
-    "active": true
+    "active": true,
+    "position": "CB"
   },
   {
     "id": "jude-g",
     "displayName": "Jude",
-    "active": true
+    "active": true,
+    "position": "CM"
   },
   {
     "id": "kalan-w",
     "displayName": "Kalan",
-    "active": true
+    "active": true,
+    "position": "CAM"
   },
   {
     "id": "kazeem-k",
@@ -107,56 +123,67 @@
   {
     "id": "keiran-d",
     "displayName": "Keiran D",
-    "active": true
+    "active": true,
+    "position": "CDM"
   },
   {
     "id": "keiran-r",
     "displayName": "Keiran R",
-    "active": false
+    "active": false,
+    "position": "LW,CAM"
   },
   {
     "id": "liam-s",
     "displayName": "Liam",
-    "active": true
+    "active": true,
+    "position": "CM"
   },
   {
     "id": "louie-j",
     "displayName": "Louie",
-    "active": true
+    "active": true,
+    "position": "RW"
   },
   {
     "id": "morgan-s",
     "displayName": "Morgan",
-    "active": true
+    "active": true,
+    "position": "CM"
   },
   {
     "id": "rocco-b",
     "displayName": "Rocco",
-    "active": true
+    "active": true,
+    "position": "LW"
   },
   {
     "id": "ronnie-d",
     "displayName": "Ronnie D",
-    "active": true
+    "active": true,
+    "position": "GK"
   },
   {
     "id": "ronnie-t",
     "displayName": "Ronnie T",
-    "active": true
+    "active": true,
+    "position": "CB"
   },
   {
     "id": "ryan-b",
     "displayName": "Ryan",
-    "active": true
+    "active": true,
+    "position": "RW"
   },
   {
     "id": "ryeley-d",
     "displayName": "Ryeley",
-    "active": true
+    "active": true,
+    "position": "LB"
   },
   {
     "id": "will-b",
     "displayName": "Will",
-    "active": true
+    "active": true,
+    "position": "LB"
   }
 ]
