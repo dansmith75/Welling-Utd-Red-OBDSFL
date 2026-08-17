@@ -55,15 +55,11 @@ def candidate_workbook_paths(script_root: Path) -> List[Path]:
     if env_path:
         candidates.append(Path(env_path).expanduser())
 
-    # Old/default behaviour: workbook in the dashboard repo root.
     candidates.append(script_root / WORKBOOK_NAME)
-
-    # Recommended behaviour: workbook kept outside GitHub in OneDrive.
     candidates.append(Path.home() / "OneDrive" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
     candidates.append(Path.home() / "OneDrive - Personal" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
     candidates.append(Path.home() / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
 
-    # Remove duplicates while preserving order.
     unique: List[Path] = []
     seen = set()
     for path in candidates:
@@ -95,9 +91,6 @@ def resolve_workbook_path(script_root: Path, workbook_arg: Optional[str] = None)
         "Either move the workbook to one of those locations, run with --workbook, or set WELLING_WORKBOOK_PATH."
     )
 
-# Columns to exclude from public player JSON. Keep contact details in Excel only.
-PRIVATE_PLAYER_COLUMNS = {"number", "email"}
-
 
 def slugify(value: Any) -> str:
     text = str(value or "").strip().lower()
@@ -110,7 +103,6 @@ def clean_value(value: Any) -> Any:
     if value is None:
         return None
     if isinstance(value, datetime):
-        # Pure Excel dates often arrive as midnight datetimes.
         if value.time().isoformat() == "00:00:00":
             return value.date().isoformat()
         return value.isoformat()
@@ -140,9 +132,6 @@ def camel_key(header: Any) -> str:
         "sessionkey": "sessionKey",
         "sessiondate": "sessionDate",
         "sessiontype": "sessionType",
-        "feepaid": "feePaid",
-        "paymentstatus": "paymentStatus",
-        "latepayment": "latePayment",
         "submittedby": "submittedBy",
         "submittedat": "submittedAt",
         "homeaway": "venue",
@@ -196,7 +185,6 @@ def export_players(workbook_path: Path) -> List[Dict[str, Any]]:
     rows = table_rows(workbook_path, "Squad", "Squad")
     players = []
     for row in rows:
-        # Skip blank/total rows and keep contact details out of public JSON.
         player_id = row.get("id") or slugify(row.get("displayName") or row.get("name"))
         display_name = row.get("displayName") or row.get("name")
         if (
@@ -210,11 +198,17 @@ def export_players(workbook_path: Path) -> List[Dict[str, Any]]:
         status_value = str(row.get("status") or "").strip().lower()
         active = bool(active_value) and status_value != "left"
 
-        players.append({
+        player = {
             "id": player_id,
             "displayName": display_name,
             "active": active,
-        })
+        }
+
+        position = row.get("position")
+        if position not in (None, ""):
+            player["position"] = position
+
+        players.append(player)
     return players
 
 
@@ -241,7 +235,6 @@ def export_matches(workbook_path: Path) -> List[Dict[str, Any]]:
 
 
 def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: str) -> List[Dict[str, Any]]:
-    """Export wide match/player tables such as Goals, Assists and Events into row records."""
     rows = table_rows(workbook_path, sheet_name, sheet_name)
     output = []
     ignored = {"date", "opposition", "count"}
@@ -249,8 +242,6 @@ def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: s
     for row in rows:
         date_value = row.get("date")
         opposition = row.get("opposition")
-
-        # Ignore placeholder rows where Excel formulas return 0/blank opposition.
         if opposition in (None, "", 0, "0"):
             continue
 
@@ -263,11 +254,8 @@ def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: s
             if value in (None, "", 0):
                 continue
 
-            # Player columns are expected to use Squad IDs, e.g. joe-g.
-            # camel_key() can remove hyphens, so reconstruct the canonical ID where possible.
             player_key = str(key)
             if re.fullmatch(r"[a-z]+[A-Z][A-Za-z0-9]*", player_key):
-                # Convert simple camelCase like joeG -> joe-g.
                 player_key = re.sub(r"([a-z0-9])([A-Z])", r"\1-\2", player_key).lower()
 
             players[player_key] = value
@@ -280,6 +268,7 @@ def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: s
         })
 
     return output
+
 
 def export_attendance(workbook_path: Path) -> Dict[str, Any]:
     rows = table_rows(workbook_path, "AttendanceRecords", "AttendanceRecords")
@@ -312,7 +301,6 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
             "status": status,
             "source": row.get("source"),
         }
-        # Remove empty optional values to keep JSON tidy.
         record = {k: v for k, v in record.items() if v is not None}
         sessions[session_key]["records"].append(record)
 
@@ -332,7 +320,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Export Welling dashboard JSON from the Excel workbook.")
     parser.add_argument(
         "--workbook",
-        help="Optional full path to the Excel workbook. If omitted, the script checks the repo root, WELLING_WORKBOOK_PATH, and common OneDrive locations.",
+        help="Optional full path to the Excel workbook.",
     )
     parser.add_argument(
         "--data-dir",
