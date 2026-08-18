@@ -86,6 +86,16 @@ def iso_date(value: Any) -> str:
     return text[:10]
 
 
+def excel_date(value: Any) -> datetime | str:
+    text = iso_date(value)
+    if not text:
+        return ""
+    try:
+        return datetime.strptime(text, "%Y-%m-%d")
+    except ValueError:
+        return text
+
+
 def table_headers(table) -> list[str]:
     values = table.range.rows[0].value
     if not isinstance(values, list):
@@ -103,6 +113,21 @@ def table_existing_column_values(table, header: str) -> set[str]:
         values = [values]
     # first item is header
     return {str(v) for v in values[1:] if v not in (None, "")}
+
+
+def table_dict_rows(table) -> list[dict[str, Any]]:
+    values = table.range.value
+    if not values:
+        return []
+    if not isinstance(values[0], list):
+        values = [values]
+    headers = [str(v or "").strip() for v in values[0]]
+    rows: list[dict[str, Any]] = []
+    for raw in values[1:]:
+        if not raw or all(v in (None, "") for v in raw):
+            continue
+        rows.append({headers[i]: raw[i] if i < len(raw) else "" for i in range(len(headers))})
+    return rows
 
 
 def append_table_rows(sheet, table, rows: list[dict[str, Any]]) -> int:
@@ -181,6 +206,140 @@ def import_attendance(book) -> int:
         existing.add(record_key)
 
     return append_table_rows(sheet, table, new_rows)
+
+
+def active_player_ids(book) -> list[str]:
+    if "Squad" not in [s.name for s in book.sheets]:
+        return []
+    sheet = book.sheets["Squad"]
+    try:
+        table = sheet.tables["Squad"]
+    except Exception:
+        return []
+    players: list[str] = []
+    for row in table_dict_rows(table):
+        pid = str(row.get("ID") or "").strip()
+        active = row.get("Active")
+        if pid and active in (True, 1, "TRUE", "True", "true", "Yes", "YES", "yes"):
+            players.append(pid)
+    return players
+
+
+def fixture_lookup(book) -> dict[tuple[str, str], str]:
+    lookup: dict[tuple[str, str], str] = {}
+    if "Fixtures" not in [s.name for s in book.sheets]:
+        return lookup
+    sheet = book.sheets["Fixtures"]
+    try:
+        table = sheet.tables["Fixtures"]
+    except Exception:
+        return lookup
+    for row in table_dict_rows(table):
+        match_date = iso_date(row.get("Date"))
+        opposition = str(row.get("Opposition") or "").strip()
+        home_away = str(row.get("Home / Away") or "").strip().lower()
+        if not match_date or not opposition:
+            continue
+        lookup[(match_date, home_away)] = opposition
+        lookup.setdefault((match_date, ""), opposition)
+    return lookup
+
+
+def latest_attendance_sessions(book, session_type: str) -> list[dict[str, Any]]:
+    sheet = book.sheets[ATTENDANCE_SHEET]
+    table = sheet.tables[ATTENDANCE_TABLE]
+    rows = table_dict_rows(table)
+
+    grouped: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        if str(row.get("SessionType") or "").strip().lower() != session_type.lower():
+            continue
+        session_key = str(row.get("SessionKey") or "").strip()
+        if not session_key:
+            continue
+        submitted_at = str(row.get("SubmittedAt") or "")
+        session = grouped.setdefault(
+            session_key,
+            {
+                "SessionKey": session_key,
+                "SessionDate": row.get("SessionDate"),
+                "Venue": str(row.get("Venue") or "").strip(),
+                "SubmittedAt": submitted_at,
+                "Players": {},
+            },
+        )
+        if submitted_at > str(session.get("SubmittedAt") or ""):
+            session["SubmittedAt"] = submitted_at
+        pid = str(row.get("PlayerId") or "").strip()
+        if pid:
+            session["Players"][pid] = str(row.get("Status") or "").strip()
+
+    # A re-submission creates a new SessionKey. For the legacy wide sheets we
+    # want one row per actual date/venue, using the latest submission.
+    latest: dict[tuple[str, str], dict[str, Any]] = {}
+    for session in grouped.values():
+        key = (iso_date(session.get("SessionDate")), str(session.get("Venue") or "").lower())
+        current = latest.get(key)
+        if current is None or str(session.get("SubmittedAt") or "") >= str(current.get("SubmittedAt") or ""):
+            latest[key] = session
+
+    return sorted(latest.values(), key=lambda s: (iso_date(s.get("SessionDate")), str(s.get("Venue") or "")))
+
+
+def refresh_wide_attendance_sheet(book, sheet_name: str, table_name: str, session_type: str) -> int:
+    if sheet_name not in [s.name for s in book.sheets]:
+        return 0
+    sheet = book.sheets[sheet_name]
+    players = active_player_ids(book)
+    sessions = latest_attendance_sessions(book, session_type)
+    fixtures = fixture_lookup(book) if session_type.lower() == "match" else {}
+
+    third_header = "Opposition" if session_type.lower() == "match" else "Session"
+    count_header = "COUNT" if session_type.lower() == "match" else "Count"
+    headers = ["Date", "Day", third_header, *players, count_header]
+    matrix: list[list[Any]] = [headers]
+
+    for session in sessions:
+        session_date = session.get("SessionDate")
+        date_key = iso_date(session_date)
+        venue = str(session.get("Venue") or "").strip()
+        if session_type.lower() == "match":
+            label = fixtures.get((date_key, venue.lower())) or fixtures.get((date_key, "")) or venue or "Match"
+        else:
+            label = "Training"
+
+        statuses = session.get("Players") or {}
+        present = [str(statuses.get(pid) or "").lower() in ("present", "late") for pid in players]
+        matrix.append([excel_date(session_date), excel_date(session_date), label, *present, sum(1 for value in present if value)])
+
+    # Keep the existing look/formatting but replace the old hand-maintained data.
+    old_last_row = max(sheet.used_range.last_cell.row, 2)
+    old_last_col = max(sheet.used_range.last_cell.column, len(headers))
+    sheet.range((1, 1), (old_last_row, old_last_col)).clear_contents()
+    sheet.range((1, 1), (len(matrix), len(headers))).value = matrix
+
+    # Reuse the existing Excel table so filters/style remain intact.
+    try:
+        table = sheet.tables[table_name]
+        end_row = max(len(matrix), 2)
+        table.resize(sheet.range((1, 1), (end_row, len(headers))))
+        if len(matrix) == 1:
+            sheet.range((2, 1), (2, len(headers))).clear_contents()
+    except Exception:
+        end_row = max(len(matrix), 2)
+        table = sheet.tables.add(sheet.range((1, 1), (end_row, len(headers))), name=table_name)
+        if len(matrix) == 1:
+            sheet.range((2, 1), (2, len(headers))).clear_contents()
+
+    sheet.range("A:B").number_format = "ddd dd-mmm-yy"
+    return len(sessions)
+
+
+def refresh_wide_attendance_sheets(book) -> dict[str, int]:
+    return {
+        "matchRows": refresh_wide_attendance_sheet(book, "Match Attendance", "Match_Attendance", "Match"),
+        "trainingRows": refresh_wide_attendance_sheet(book, "Training Attendance", "Training_Attendance", "Training"),
+    }
 
 
 def ensure_matchday_table(book):
@@ -481,13 +640,17 @@ def main() -> None:
         book = app.books.open(str(workbook_path), update_links=False, read_only=False)
 
         attendance_rows = import_attendance(book)
+        attendance_views = refresh_wide_attendance_sheets(book)
         matchday_sessions, matchday_rows_added, warnings = import_matchday(book)
 
-        if attendance_rows or matchday_sessions:
-            book.save()
+        # The wide attendance sheets are regenerated every run, so save even if
+        # there were no new Supabase rows this time.
+        book.save()
 
         print("SUPABASE_SYNC_SUMMARY=" + json.dumps({
             "attendanceRows": attendance_rows,
+            "matchAttendanceRows": attendance_views.get("matchRows", 0),
+            "trainingAttendanceRows": attendance_views.get("trainingRows", 0),
             "matchdaySessions": matchday_sessions,
             "matchdayRows": matchday_rows_added,
             "warnings": warnings,
