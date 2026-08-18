@@ -8,6 +8,7 @@ Option A output: separate JSON files in ./data/
 - assists.json
 - events.json
 - attendance.json
+- minutes.json
 
 How to run from the dashboard repo folder:
     python export_welling_json.py
@@ -32,10 +33,9 @@ import argparse
 import json
 import os
 import re
-from collections import defaultdict
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openpyxl import load_workbook
 from openpyxl.utils import range_boundaries
@@ -48,13 +48,10 @@ ENV_WORKBOOK_PATH = "WELLING_WORKBOOK_PATH"
 
 
 def candidate_workbook_paths(script_root: Path) -> List[Path]:
-    """Possible workbook locations, in priority order."""
     candidates: List[Path] = []
-
     env_path = os.environ.get(ENV_WORKBOOK_PATH)
     if env_path:
         candidates.append(Path(env_path).expanduser())
-
     candidates.append(script_root / WORKBOOK_NAME)
     candidates.append(Path.home() / "OneDrive" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
     candidates.append(Path.home() / "OneDrive - Personal" / "Documents" / "Dan" / "Football" / WORKBOOK_NAME)
@@ -67,12 +64,10 @@ def candidate_workbook_paths(script_root: Path) -> List[Path]:
         if resolved_key not in seen:
             unique.append(path)
             seen.add(resolved_key)
-
     return unique
 
 
 def resolve_workbook_path(script_root: Path, workbook_arg: Optional[str] = None) -> Path:
-    """Find the workbook, either from --workbook, env var, or known default locations."""
     if workbook_arg:
         workbook_path = Path(workbook_arg).expanduser()
         if workbook_path.exists():
@@ -99,7 +94,6 @@ def slugify(value: Any) -> str:
 
 
 def clean_value(value: Any) -> Any:
-    """Convert Excel values into JSON-safe values."""
     if value is None:
         return None
     if isinstance(value, datetime):
@@ -115,7 +109,6 @@ def clean_value(value: Any) -> Any:
 
 
 def camel_key(header: Any) -> str:
-    """Turn Excel headers into predictable camelCase JSON keys."""
     text = str(header or "").strip()
     text = text.replace("/", " ").replace("-", " ")
     parts = re.findall(r"[A-Za-z0-9]+", text)
@@ -142,7 +135,6 @@ def camel_key(header: Any) -> str:
 
 
 def table_rows(workbook_path: Path, sheet_name: str, table_name: Optional[str] = None) -> List[Dict[str, Any]]:
-    """Read an Excel table into a list of dictionaries."""
     wb = load_workbook(workbook_path, data_only=True)
     if sheet_name not in wb.sheetnames:
         return []
@@ -187,27 +179,16 @@ def export_players(workbook_path: Path) -> List[Dict[str, Any]]:
     for row in rows:
         player_id = row.get("id") or slugify(row.get("displayName") or row.get("name"))
         display_name = row.get("displayName") or row.get("name")
-        if (
-            not player_id
-            or not display_name
-            or str(player_id).strip().lower() == "total"
-        ):
+        if not player_id or not display_name or str(player_id).strip().lower() == "total":
             continue
 
         active_value = row.get("active")
         status_value = str(row.get("status") or "").strip().lower()
         active = bool(active_value) and status_value != "left"
-
-        player = {
-            "id": player_id,
-            "displayName": display_name,
-            "active": active,
-        }
-
+        player = {"id": player_id, "displayName": display_name, "active": active}
         position = row.get("position")
         if position not in (None, ""):
             player["position"] = position
-
         players.append(player)
     return players
 
@@ -247,32 +228,20 @@ def export_wide_player_stats(workbook_path: Path, sheet_name: str, output_key: s
 
         match_id = slugify(f"{date_value}-{opposition}")
         players: Dict[str, Any] = {}
-
         for key, value in row.items():
-            if key in ignored:
+            if key in ignored or value in (None, "", 0):
                 continue
-            if value in (None, "", 0):
-                continue
-
             player_key = str(key)
             if re.fullmatch(r"[a-z]+[A-Z][A-Za-z0-9]*", player_key):
                 player_key = re.sub(r"([a-z0-9])([A-Z])", r"\1-\2", player_key).lower()
-
             players[player_key] = value
 
-        output.append({
-            "matchId": match_id,
-            "date": date_value,
-            "opposition": opposition,
-            output_key: players,
-        })
-
+        output.append({"matchId": match_id, "date": date_value, "opposition": opposition, output_key: players})
     return output
 
 
 def export_attendance(workbook_path: Path) -> Dict[str, Any]:
     rows = table_rows(workbook_path, "AttendanceRecords", "AttendanceRecords")
-
     sessions: Dict[str, Dict[str, Any]] = {}
     for row in rows:
         session_key = row.get("sessionKey")
@@ -281,7 +250,6 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
         status = row.get("status")
         if not session_key or not player_id or not status:
             continue
-
         if session_key not in sessions:
             sessions[session_key] = {
                 "sessionKey": session_key,
@@ -293,7 +261,6 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
                 "submittedAt": row.get("submittedAt"),
                 "records": [],
             }
-
         record = {
             "recordKey": row.get("recordKey"),
             "playerId": player_id,
@@ -304,29 +271,44 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
         record = {k: v for k, v in record.items() if v is not None}
         sessions[session_key]["records"].append(record)
 
-    ordered_sessions = sorted(
-        sessions.values(),
-        key=lambda session: (session.get("date") or "", session.get("submittedAt") or ""),
-    )
+    ordered_sessions = sorted(sessions.values(), key=lambda session: (session.get("date") or "", session.get("submittedAt") or ""))
+    return {"team": TEAM, "season": SEASON, "sessions": ordered_sessions}
 
-    return {
-        "team": TEAM,
-        "season": SEASON,
-        "sessions": ordered_sessions,
-    }
+
+def export_minutes(workbook_path: Path) -> List[Dict[str, Any]]:
+    """Export one playing-minutes record per player per completed Matchday."""
+    rows = table_rows(workbook_path, "MatchdayRecords", "MatchdayRecords")
+    output: List[Dict[str, Any]] = []
+    for row in rows:
+        if str(row.get("recordType") or "").strip().lower() != "minutes":
+            continue
+        player_id = row.get("playerId")
+        display_name = row.get("displayName")
+        if not player_id or not display_name:
+            continue
+        try:
+            minutes = int(round(float(row.get("value") or 0)))
+        except (TypeError, ValueError):
+            minutes = 0
+        output.append({
+            "sessionId": row.get("sessionId"),
+            "matchId": row.get("matchId"),
+            "date": row.get("matchDate"),
+            "opposition": row.get("opposition"),
+            "competition": row.get("competition"),
+            "playerId": player_id,
+            "displayName": display_name,
+            "minutes": minutes,
+            "starter": str(row.get("detail") or "").strip().lower() == "starter",
+            "submittedBy": row.get("submittedBy"),
+        })
+    return sorted(output, key=lambda item: (str(item.get("date") or ""), str(item.get("displayName") or "")))
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Export Welling dashboard JSON from the Excel workbook.")
-    parser.add_argument(
-        "--workbook",
-        help="Optional full path to the Excel workbook.",
-    )
-    parser.add_argument(
-        "--data-dir",
-        default=str(DATA_DIR),
-        help="Output data folder. Default: data",
-    )
+    parser.add_argument("--workbook", help="Optional full path to the Excel workbook.")
+    parser.add_argument("--data-dir", default=str(DATA_DIR), help="Output data folder. Default: data")
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent
@@ -342,6 +324,7 @@ def main() -> None:
     write_json(data_dir / "assists.json", export_wide_player_stats(workbook_path, "Assists", "assists"))
     write_json(data_dir / "events.json", export_wide_player_stats(workbook_path, "Events", "events"))
     write_json(data_dir / "attendance.json", export_attendance(workbook_path))
+    write_json(data_dir / "minutes.json", export_minutes(workbook_path))
 
     print("Done. Dashboard JSON files updated.")
 
