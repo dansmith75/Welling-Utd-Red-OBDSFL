@@ -190,7 +190,7 @@ def minutes_lookup(book):
 
 def build(book):
     settings, saved_bias, saved_override = existing_settings(book)
-    default_match, default_opp = next_fixture(book)
+    default_match, _ = next_fixture(book)
     match_date = settings["match_date"] or default_match
 
     squad = []
@@ -267,8 +267,12 @@ def build(book):
 
     end = start + len(squad) - 1
     if end >= start:
-        sh.range(f"O{start}:O{end}").api.Validation.Delete()
-        sh.range(f"O{start}:O{end}").api.Validation.Add(3,1,1,"AUTO,SELECT,ROTATE")
+        validation = sh.range(f"O{start}:O{end}").api.Validation
+        try:
+            validation.Delete()
+        except Exception:
+            pass
+        validation.Add(3,1,1,"AUTO,SELECT,ROTATE")
         sh.range(f"N{start}:N{end}").color = "#FFF2CC"
         sh.range(f"O{start}:O{end}").color = "#FFF2CC"
         sh.range(f"F{start}:Q{end}").api.HorizontalAlignment = -4108
@@ -276,7 +280,6 @@ def build(book):
     sh.range("A:Q").api.Columns.AutoFit()
     for col, width in {"B":15,"C":16,"D":14,"E":14,"G":14,"Q":18}.items():
         sh.range(f"{col}:{col}").column_width = width
-    sh.freeze_panes.freeze_rows(11)
     book.save()
     print(f"Squad Selection refreshed: {len(squad)} active players, match {match_date}, latest training {latest_training}")
 
