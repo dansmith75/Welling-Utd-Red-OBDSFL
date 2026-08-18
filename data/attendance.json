@@ -441,12 +441,6 @@
       "submittedAt": "2026-08-18T16:06:38.93335+00:00",
       "records": [
         {
-          "playerId": "alfie-f",
-          "displayName": "Alfie F",
-          "status": "Present",
-          "source": "App"
-        },
-        {
           "playerId": "bailey-s",
           "displayName": "Bailey",
           "status": "Present",
@@ -483,12 +477,6 @@
           "source": "App"
         },
         {
-          "playerId": "imi-s",
-          "displayName": "Imi",
-          "status": "Present",
-          "source": "App"
-        },
-        {
           "playerId": "jay-p",
           "displayName": "Jay",
           "status": "Injured",
@@ -503,6 +491,18 @@
         {
           "playerId": "josh-m",
           "displayName": "Josh",
+          "status": "Present",
+          "source": "App"
+        },
+        {
+          "playerId": "imre-s",
+          "displayName": "Imre",
+          "status": "Present",
+          "source": "App"
+        },
+        {
+          "playerId": "alfie-f",
+          "displayName": "Alf",
           "status": "Present",
           "source": "App"
         },
@@ -576,155 +576,6 @@
           "playerId": "will-b",
           "displayName": "Will",
           "status": "Present",
-          "source": "App"
-        }
-      ]
-    },
-    {
-      "sessionKey": "2026-08-17-match-na-63339675",
-      "sessionId": "63339675-4dfa-4a63-b409-f1e4a643ee6e",
-      "date": "2026-08-17",
-      "type": "Match",
-      "venue": null,
-      "submittedBy": "Dan",
-      "submittedAt": "2026-08-17T08:26:23.462145+00:00",
-      "records": [
-        {
-          "playerId": "alfie-f",
-          "displayName": "Alfie F",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "bailey-s",
-          "displayName": "Bailey",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "brad-e",
-          "displayName": "Brad",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "darren-r",
-          "displayName": "Darren",
-          "status": "Injured",
-          "source": "App"
-        },
-        {
-          "playerId": "frank-a",
-          "displayName": "Frank",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "george-h",
-          "displayName": "George H",
-          "status": "Unavailable",
-          "source": "App"
-        },
-        {
-          "playerId": "george-w",
-          "displayName": "George W",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "imi-s",
-          "displayName": "Imi",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "jay-p",
-          "displayName": "Jay",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "joe-g",
-          "displayName": "Joe",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "josh-m",
-          "displayName": "Josh",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "jude-g",
-          "displayName": "Jude",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "kalan-w",
-          "displayName": "Kalan",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "keiran-d",
-          "displayName": "Keiran D",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "liam-s",
-          "displayName": "Liam",
-          "status": "Unavailable",
-          "source": "App"
-        },
-        {
-          "playerId": "louie-j",
-          "displayName": "Louie",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "morgan-s",
-          "displayName": "Morgan",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "rocco-b",
-          "displayName": "Rocco",
-          "status": "Present",
-          "source": "App"
-        },
-        {
-          "playerId": "ronnie-d",
-          "displayName": "Ronnie D",
-          "status": "Late",
-          "source": "App"
-        },
-        {
-          "playerId": "ronnie-t",
-          "displayName": "Ronnie T",
-          "status": "Rotated",
-          "source": "App"
-        },
-        {
-          "playerId": "ryan-b",
-          "displayName": "Ryan",
-          "status": "Rotated",
-          "source": "App"
-        },
-        {
-          "playerId": "ryeley-d",
-          "displayName": "Ryeley",
-          "status": "Rotated",
-          "source": "App"
-        },
-        {
-          "playerId": "will-b",
-          "displayName": "Will",
-          "status": "Rotated",
           "source": "App"
         }
       ]
