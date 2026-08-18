@@ -10,19 +10,13 @@ from datetime import datetime
 from pathlib import Path
 
 WORKBOOK_NAME = "Welling United Red OBDSFL 26-27.xlsx"
-EXPECTED = ["players.json", "matches.json", "goals.json", "assists.json", "events.json", "attendance.json"]
+EXPECTED = ["players.json", "matches.json", "goals.json", "assists.json", "events.json", "attendance.json", "minutes.json"]
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 
 
 def run(args, check=True, capture=False):
-    return subprocess.run(
-        args,
-        cwd=ROOT,
-        text=True,
-        check=check,
-        capture_output=capture,
-    )
+    return subprocess.run(args, cwd=ROOT, text=True, check=check, capture_output=capture)
 
 
 def ensure_python_package(import_name: str, pip_name: str | None = None):
@@ -123,10 +117,7 @@ def match_summary(old, new):
 def sync_supabase(workbook: Path) -> dict:
     ensure_python_package("xlwings")
     print("2/7 Pulling Attendance / Matchday submissions from Supabase into Excel...")
-    result = run(
-        [sys.executable, str(ROOT / "sync_supabase_to_excel.py"), str(workbook)],
-        capture=True,
-    )
+    result = run([sys.executable, str(ROOT / "sync_supabase_to_excel.py"), str(workbook)], capture=True)
     if result.stdout:
         for line in result.stdout.splitlines():
             if not line.startswith("SUPABASE_SYNC_SUMMARY="):
@@ -205,6 +196,7 @@ def main():
         "data/assists.json": "Assists",
         "data/events.json": "Events",
         "data/attendance.json": "Attendance",
+        "data/minutes.json": "Playing minutes",
     }
     other = [f"  * {labels[p]} updated" for p in changed if p in labels]
     print("\n".join(other) if other else "  No other data changes")
@@ -233,7 +225,7 @@ def main():
     print(" SUCCESS")
     print("============================================")
     print("Central Attendance / Matchday submissions reconciled into Excel.")
-    print("Dashboard data published.")
+    print("Dashboard data published, including playing minutes.")
     print("Attendance / Matchday will use the same shared squad and fixture feeds.")
     print("GitHub Pages normally updates shortly afterwards.\n")
 
