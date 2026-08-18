@@ -54,6 +54,16 @@ if %errorlevel%==0 (
 )
 if errorlevel 1 goto :fail
 
+echo.
+echo Refreshing squad rotation / selection model...
+where py >nul 2>nul
+if %errorlevel%==0 (
+    py refresh_squad_selection.py "%WELLING_XLSX%"
+) else (
+    python refresh_squad_selection.py "%WELLING_XLSX%"
+)
+if errorlevel 1 goto :fail
+
 goto :done
 
 :fail
