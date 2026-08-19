@@ -131,7 +131,7 @@ def sync_supabase(workbook: Path) -> dict:
 
 def main():
     print("\n============================================")
-    print(" Welling United Red - Update Website")
+    print(" Welling Dashboard - Update")
     print("============================================\n")
 
     print("1/7 Syncing latest website code from GitHub...")
