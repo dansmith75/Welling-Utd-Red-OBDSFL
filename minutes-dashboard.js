@@ -19,12 +19,9 @@
     const records = recordsForPlayer(player);
     const appearances = records.filter(record => number(record.minutes) > 0);
     const totalMinutes = appearances.reduce((sum, record) => sum + number(record.minutes), 0);
-    const starts = appearances.filter(record => record.starter === true).length;
     return {
       totalMinutes: Math.round(totalMinutes),
       appearances: appearances.length,
-      starts,
-      averageMinutes: appearances.length ? Math.round(totalMinutes / appearances.length) : 0,
     };
   }
 
@@ -33,6 +30,20 @@
     const toneClass = tone ? ` ${tone}` : "";
     const action = onclick ? ` onclick="${onclick}"` : "";
     return `<div class="stat${toneClass}${clickable}"${action}><b>${value}</b><span>${label}</span></div>`;
+  }
+
+  function matchForStatRow(row) {
+    return (store.matches || []).find(match =>
+      match.date === row.date && match.opposition === row.opposition
+    );
+  }
+
+  function matchContext(row) {
+    const match = matchForStatRow(row);
+    const competition = row.competition || match?.competition || "";
+    const homeAway = row.homeAway || match?.homeAway || match?.venue || "";
+    const parts = [competition, homeAway].filter(Boolean);
+    return parts.length ? ` — ${parts.join(" · ")}` : "";
   }
 
   // Keep the player summary as a tidy 4 x 2 grid on desktop. All cards use
@@ -83,8 +94,8 @@
     summary.innerHTML = [
       statCard(goals, "Goals", `showPlayerDetail('${player}', 'goals')`),
       statCard(assists, "Assists", `showPlayerDetail('${player}', 'assists')`),
-      statCard(stats.appearances, "Appearances", `showPlayerDetail('${player}', 'minutes')`),
-      statCard(stats.totalMinutes, "Minutes Played", `showPlayerDetail('${player}', 'minutes')`),
+      statCard(stats.appearances, "Recorded Appearances", `showPlayerDetail('${player}', 'minutes')`),
+      statCard(stats.totalMinutes, "Recorded Minutes", `showPlayerDetail('${player}', 'minutes')`),
       statCard(cards.yellow, "Yellow Cards", `showPlayerDetail('${player}', 'yellowCards')`, "warning"),
       statCard(cards.red, "Red Cards", `showPlayerDetail('${player}', 'redCards')`, "danger"),
       statCard(trainingAttendance, "Training Attendances", `showPlayerDetail('${player}', 'trainingAttendance')`, "training"),
@@ -94,6 +105,26 @@
 
   const coreShowPlayerDetail = showPlayerDetail;
   showPlayerDetail = function (player, type) {
+    if (type === "goals" || type === "assists") {
+      const box = document.getElementById("playerDetailBox");
+      if (!box) return;
+
+      const source = type === "goals" ? (store.goals || []) : (store.assists || []);
+      const key = type;
+      const label = type === "goals" ? "Goals" : "Assists";
+      const rows = source
+        .filter(row => number(row?.[key]?.[player]) > 0)
+        .map(row => `<li><strong>${formatDateUK(row.date)}</strong> vs ${row.opposition || ""}${matchContext(row)}: <strong>${number(row[key][player])}</strong></li>`);
+
+      box.innerHTML = `
+        <div class="player-detail-box">
+          <h2>${player} — ${label}</h2>
+          ${rows.length ? `<ul>${rows.join("")}</ul>` : `<p>No ${label.toLowerCase()} recorded for ${player}.</p>`}
+        </div>
+      `;
+      return;
+    }
+
     if (type !== "minutes") {
       coreShowPlayerDetail(player, type);
       return;
@@ -115,8 +146,8 @@
 
     box.innerHTML = `
       <div class="player-detail-box">
-        <h2>${player} — Minutes Played</h2>
-        <p><strong>${stats.totalMinutes}</strong> minutes across <strong>${stats.appearances}</strong> appearances.</p>
+        <h2>${player} — Recorded Minutes</h2>
+        <p><strong>${stats.totalMinutes}</strong> recorded minutes across <strong>${stats.appearances}</strong> recorded appearances.</p>
         ${items.length ? `<ul>${items.join("")}</ul>` : `<p>No playing minutes recorded for ${player} yet.</p>`}
       </div>
     `;
