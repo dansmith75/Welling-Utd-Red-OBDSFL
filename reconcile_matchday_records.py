@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import urllib.parse
 import urllib.request
@@ -129,23 +130,13 @@ def table_rows(table) -> list[dict[str, Any]]:
 
 
 def rewrite_table(sheet, table, headers: list[str], rows: list[dict[str, Any]]):
-    """Rewrite a ListObject without clearing its header row first.
-
-    Clearing the full table range (including headers) can invalidate Excel's
-    COM ListObject and make the subsequent Resize call fail with OLE 0x800a01a8.
-    Resize while the table is intact, then overwrite the header/data cells.
-    """
     start_row = table.range.row
     start_col = table.range.column
     end_col = start_col + len(headers) - 1
     data_count = max(len(rows), 1)
     end_row = start_row + data_count
-
-    target = sheet.range((start_row, start_col), (end_row, end_col))
-    table.resize(target)
-
+    table.resize(sheet.range((start_row, start_col), (end_row, end_col)))
     sheet.range((start_row, start_col), (start_row, end_col)).value = [headers]
-
     body = [[row.get(h, "") for h in headers] for row in rows]
     if body:
         sheet.range((start_row + 1, start_col), (start_row + len(body), end_col)).value = body
@@ -178,6 +169,19 @@ def ensure_summary_row(book, sheet_name: str, match_date: str, opposition: str):
     sheet.range((new_row, date_col)).value = match_date
     sheet.range((new_row, opp_col)).value = opposition
     return sheet, new_row, headers
+
+
+def header_slug(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", str(value or "").strip().lower()).strip("-")
+
+
+def player_header_index(headers: list[str], player_id: str, display_name: str) -> int | None:
+    """Match modern app IDs to legacy Excel headings such as Ryan B / Rocco B."""
+    wanted = {header_slug(player_id), header_slug(display_name)}
+    for index, header in enumerate(headers):
+        if header_slug(header) in wanted:
+            return index
+    return None
 
 
 def sync_summary_sheets(book, sessions: list[dict[str, Any]]) -> list[str]:
@@ -220,32 +224,30 @@ def sync_summary_sheets(book, sessions: list[dict[str, Any]]) -> list[str]:
                 continue
             for pid, count in values.items():
                 name = names.get(pid, pid)
-                if name in headers:
-                    col = sheet.tables[sheet_name].range.column + headers.index(name)
+                idx = player_header_index(headers, pid, name)
+                if idx is not None:
+                    col = sheet.tables[sheet_name].range.column + idx
                     sheet.range((row_num, col)).value = count
                 else:
-                    warnings.append(f"Missing {sheet_name} player column: {name}")
+                    warnings.append(f"Missing {sheet_name} player column: {name} ({pid})")
 
         sheet, row_num, headers = ensure_summary_row(book, "Events", match_date, opposition)
         if sheet and row_num:
             for pid, texts in event_text.items():
                 name = names.get(pid, pid)
-                if name in headers:
-                    col = sheet.tables["Events"].range.column + headers.index(name)
+                idx = player_header_index(headers, pid, name)
+                if idx is not None:
+                    col = sheet.tables["Events"].range.column + idx
                     sheet.range((row_num, col)).value = " | ".join(texts)
                 else:
-                    warnings.append(f"Missing Events player column: {name}")
+                    warnings.append(f"Missing Events player column: {name} ({pid})")
 
         if "Fixtures" in [s.name for s in book.sheets]:
             sheet = book.sheets["Fixtures"]
             try:
                 table = sheet.tables["Fixtures"]
                 headers = [str(v or "").strip() for v in table.range.rows[0].value]
-                aliases = {
-                    "GF": ["GF", "Goals For"],
-                    "GA": ["GA", "Goals Against"],
-                    "Result": ["Result"],
-                }
+                aliases = {"GF": ["GF", "Goals For"], "GA": ["GA", "Goals Against"], "Result": ["Result"]}
                 date_idx = headers.index("Date") if "Date" in headers else None
                 opp_idx = headers.index("Opposition") if "Opposition" in headers else None
                 target = None
