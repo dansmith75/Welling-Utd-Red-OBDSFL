@@ -35,11 +35,12 @@ function normaliseWellingDashboardData() {
   if (wellingDataNormalised) return;
   if (!store.players || !store.matches) return;
 
-  // The exporter now calls this field `venue`; the existing dashboard code uses
-  // `homeAway`. Keep both so older UI code continues to work.
+  // homeAway is now the canonical fixture field. `venue` is retained only as a
+  // temporary compatibility alias for older consumers of the shared match feed.
   // Also normalise historic W/L/D values so every result uses the same coloured badge.
   store.matches.forEach(match => {
     if (!match.homeAway && match.venue) match.homeAway = match.venue;
+    if (!match.venue && match.homeAway) match.venue = match.homeAway;
     match.result = wellingNormaliseResult(match.result);
   });
 
@@ -48,7 +49,7 @@ function normaliseWellingDashboardData() {
     return {
       ...row,
       competition: row.competition || match?.competition || null,
-      homeAway: row.homeAway || row.venue || match?.venue || match?.homeAway || null,
+      homeAway: row.homeAway || row.venue || match?.homeAway || match?.venue || null,
       goals: wellingMapPlayerKeys(row.goals)
     };
   });
@@ -58,7 +59,7 @@ function normaliseWellingDashboardData() {
     return {
       ...row,
       competition: row.competition || match?.competition || null,
-      homeAway: row.homeAway || row.venue || match?.venue || match?.homeAway || null,
+      homeAway: row.homeAway || row.venue || match?.homeAway || match?.venue || null,
       assists: wellingMapPlayerKeys(row.assists)
     };
   });
