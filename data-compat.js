@@ -23,14 +23,24 @@ function wellingFindMatch(row) {
   );
 }
 
+function wellingNormaliseResult(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (text === "w" || text === "win") return "Win";
+  if (text === "l" || text === "loss" || text === "lose") return "Loss";
+  if (text === "d" || text === "draw") return "Draw";
+  return value || "";
+}
+
 function normaliseWellingDashboardData() {
   if (wellingDataNormalised) return;
   if (!store.players || !store.matches) return;
 
   // The exporter now calls this field `venue`; the existing dashboard code uses
   // `homeAway`. Keep both so older UI code continues to work.
+  // Also normalise historic W/L/D values so every result uses the same coloured badge.
   store.matches.forEach(match => {
     if (!match.homeAway && match.venue) match.homeAway = match.venue;
+    match.result = wellingNormaliseResult(match.result);
   });
 
   store.goals = (store.goals || []).map(row => {
