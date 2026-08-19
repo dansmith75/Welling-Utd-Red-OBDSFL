@@ -1,4 +1,4 @@
-// Player minutes reporting for the Welling dashboard.
+// Player minutes reporting and player-summary layout for the Welling dashboard.
 // Minutes are exported from Excel MatchdayRecords, which is populated from
 // completed Matchday submissions in Supabase.
 (() => {
@@ -28,11 +28,43 @@
     };
   }
 
-  function statCard(value, label, onclick = "") {
+  function statCard(value, label, onclick = "", tone = "") {
     const clickable = onclick ? " clickable" : "";
+    const toneClass = tone ? ` ${tone}` : "";
     const action = onclick ? ` onclick="${onclick}"` : "";
-    return `<div class="stat${clickable}"${action}><b>${value}</b><span>${label}</span></div>`;
+    return `<div class="stat${toneClass}${clickable}"${action}><b>${value}</b><span>${label}</span></div>`;
   }
+
+  // Keep the player summary as a tidy 4 x 2 grid on desktop. All cards use
+  // identical dimensions, regardless of label length.
+  const style = document.createElement("style");
+  style.textContent = `
+    #playerProfile .summary.player-summary-grid {
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+    #playerProfile .summary.player-summary-grid .stat {
+      min-width:0;
+      min-height:114px;
+      height:114px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    @media (max-width:760px) {
+      #playerProfile .summary.player-summary-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+    @media (max-width:430px) {
+      #playerProfile .summary.player-summary-grid {
+        grid-template-columns:1fr;
+      }
+    }
+  `;
+  document.head.appendChild(style);
 
   const coreRenderPlayerProfile = renderPlayerProfile;
   renderPlayerProfile = function (player) {
@@ -41,12 +73,23 @@
     if (!summary) return;
 
     const stats = minutesSummary(player);
-    summary.insertAdjacentHTML("beforeend", [
-      statCard(stats.totalMinutes, "Minutes Played", `showPlayerDetail('${player}', 'minutes')`),
+    const goals = getPlayerGoals(player);
+    const assists = getPlayerAssists(player);
+    const cards = getCardCounts(player);
+    const trainingAttendance = countAttendanceForPlayer(store.trainingAttendance, player);
+    const injuryWeeks = getInjuryDates(player).length;
+
+    summary.classList.add("player-summary-grid");
+    summary.innerHTML = [
+      statCard(goals, "Goals", `showPlayerDetail('${player}', 'goals')`),
+      statCard(assists, "Assists", `showPlayerDetail('${player}', 'assists')`),
       statCard(stats.appearances, "Appearances", `showPlayerDetail('${player}', 'minutes')`),
-      statCard(stats.starts, "Starts"),
-      statCard(stats.averageMinutes, "Avg Minutes"),
-    ].join(""));
+      statCard(stats.totalMinutes, "Minutes Played", `showPlayerDetail('${player}', 'minutes')`),
+      statCard(cards.yellow, "Yellow Cards", `showPlayerDetail('${player}', 'yellowCards')`, "warning"),
+      statCard(cards.red, "Red Cards", `showPlayerDetail('${player}', 'redCards')`, "danger"),
+      statCard(trainingAttendance, "Training Attendances", `showPlayerDetail('${player}', 'trainingAttendance')`, "training"),
+      statCard(injuryWeeks, "Weeks Injured", `showPlayerDetail('${player}', 'injuries')`),
+    ].join("");
   };
 
   const coreShowPlayerDetail = showPlayerDetail;
@@ -73,7 +116,7 @@
     box.innerHTML = `
       <div class="player-detail-box">
         <h2>${player} — Minutes Played</h2>
-        <p><strong>${stats.totalMinutes}</strong> minutes across <strong>${stats.appearances}</strong> appearances · <strong>${stats.starts}</strong> starts · <strong>${stats.averageMinutes}</strong> min average.</p>
+        <p><strong>${stats.totalMinutes}</strong> minutes across <strong>${stats.appearances}</strong> appearances.</p>
         ${items.length ? `<ul>${items.join("")}</ul>` : `<p>No playing minutes recorded for ${player} yet.</p>`}
       </div>
     `;
