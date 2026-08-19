@@ -1,5 +1,8 @@
 r"""
-Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.\n\nExcel remains the source of truth. Attendance export contains football attendance/status data only;\nmonthly player fees are managed separately in the workbook and are not exported as attendance payment data.
+Export Welling United Red OBDSFL workbook tables into clean dashboard JSON files.
+
+Excel remains the source of truth. Attendance export contains football attendance/status data only;
+monthly player fees are managed separately in the workbook and are not exported as attendance payment data.
 
 Option A output: separate JSON files in ./data/
 - players.json
@@ -130,7 +133,7 @@ def camel_key(header: Any) -> str:
         "matchid": "matchId",
         "matchdate": "matchDate",
         "recordtype": "recordType",
-        "homeaway": "venue",
+        "homeaway": "homeAway",
         "goalsfor": "goalsFor",
         "goalsagainst": "goalsAgainst",
     }
@@ -203,13 +206,17 @@ def export_matches(workbook_path: Path) -> List[Dict[str, Any]]:
         if row.get("opposition") in (None, "", 0, "0"):
             continue
         match_id = slugify(f"{row.get('date')}-{row.get('opposition')}")
+        home_away = row.get("homeAway")
         matches.append({
             "id": match_id,
             "date": row.get("date"),
             "day": row.get("day"),
             "opposition": row.get("opposition"),
             "competition": row.get("competition"),
-            "venue": row.get("venue"),
+            "homeAway": home_away,
+            # Transitional alias so older Welling Match code can keep consuming
+            # the shared fixture feed while homeAway becomes the canonical field.
+            "venue": home_away,
             "postponed": bool(row.get("postponed")) if row.get("postponed") is not None else False,
             "goalsFor": row.get("goalsFor"),
             "goalsAgainst": row.get("goalsAgainst"),
@@ -301,7 +308,6 @@ def export_minutes(workbook_path: Path) -> List[Dict[str, Any]]:
     header_positions: Dict[str, int] = {}
     for offset, header in enumerate(raw_headers):
         key = _normal_header(header)
-        # Prefer the first occurrence (the canonical compact column) if aliases exist.
         if key and key not in header_positions:
             header_positions[key] = min_col + offset
 
