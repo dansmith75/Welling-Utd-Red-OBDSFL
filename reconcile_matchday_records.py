@@ -129,17 +129,27 @@ def table_rows(table) -> list[dict[str, Any]]:
 
 
 def rewrite_table(sheet, table, headers: list[str], rows: list[dict[str, Any]]):
+    """Rewrite a ListObject without clearing its header row first.
+
+    Clearing the full table range (including headers) can invalidate Excel's
+    COM ListObject and make the subsequent Resize call fail with OLE 0x800a01a8.
+    Resize while the table is intact, then overwrite the header/data cells.
+    """
     start_row = table.range.row
     start_col = table.range.column
-    old_end_row = table.range.last_cell.row
-    old_end_col = table.range.last_cell.column
-    sheet.range((start_row, start_col), (old_end_row, old_end_col)).clear_contents()
-    matrix = [headers] + [[row.get(h, "") for h in headers] for row in rows]
-    end_row = start_row + max(len(matrix), 2) - 1
     end_col = start_col + len(headers) - 1
-    sheet.range((start_row, start_col), (start_row + len(matrix) - 1, end_col)).value = matrix
-    table.resize(sheet.range((start_row, start_col), (end_row, end_col)))
-    if len(matrix) == 1:
+    data_count = max(len(rows), 1)
+    end_row = start_row + data_count
+
+    target = sheet.range((start_row, start_col), (end_row, end_col))
+    table.resize(target)
+
+    sheet.range((start_row, start_col), (start_row, end_col)).value = [headers]
+
+    body = [[row.get(h, "") for h in headers] for row in rows]
+    if body:
+        sheet.range((start_row + 1, start_col), (start_row + len(body), end_col)).value = body
+    else:
         sheet.range((start_row + 1, start_col), (start_row + 1, end_col)).clear_contents()
 
 
