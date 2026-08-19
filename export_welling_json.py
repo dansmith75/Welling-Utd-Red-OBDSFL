@@ -117,6 +117,8 @@ def camel_key(header: Any) -> str:
     first = parts[0].lower()
     rest = [p[:1].upper() + p[1:].lower() for p in parts[1:]]
     key = first + "".join(rest)
+    # Compact Excel headers such as MatchId / RecordType arrive as one token,
+    # so normalize both compact and spaced variants to the same JSON keys.
     replacements = {
         "id": "id",
         "displayname": "displayName",
@@ -127,11 +129,14 @@ def camel_key(header: Any) -> str:
         "sessiontype": "sessionType",
         "submittedby": "submittedBy",
         "submittedat": "submittedAt",
+        "matchid": "matchId",
+        "matchdate": "matchDate",
+        "recordtype": "recordType",
         "homeaway": "venue",
         "goalsfor": "goalsFor",
         "goalsagainst": "goalsAgainst",
     }
-    return replacements.get(key, key)
+    return replacements.get(key.lower(), key)
 
 
 def table_rows(workbook_path: Path, sheet_name: str, table_name: Optional[str] = None) -> List[Dict[str, Any]]:
