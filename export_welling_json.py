@@ -117,8 +117,6 @@ def camel_key(header: Any) -> str:
     first = parts[0].lower()
     rest = [p[:1].upper() + p[1:].lower() for p in parts[1:]]
     key = first + "".join(rest)
-    # Compact Excel headers such as MatchId / RecordType arrive as one token,
-    # so normalize both compact and spaced variants to the same JSON keys.
     replacements = {
         "id": "id",
         "displayname": "displayName",
@@ -280,32 +278,84 @@ def export_attendance(workbook_path: Path) -> Dict[str, Any]:
     return {"team": TEAM, "season": SEASON, "sessions": ordered_sessions}
 
 
+def _normal_header(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(value or "").strip().lower())
+
+
 def export_minutes(workbook_path: Path) -> List[Dict[str, Any]]:
-    """Export one playing-minutes record per player per completed Matchday."""
-    rows = table_rows(workbook_path, "MatchdayRecords", "MatchdayRecords")
+    """Export playing minutes directly from MatchdayRecords using raw headers.
+
+    This deliberately avoids the generic camelCase row mapper because the workbook
+    has carried both compact and spaced compatibility headers during migration.
+    """
+    wb = load_workbook(workbook_path, data_only=True)
+    if "MatchdayRecords" not in wb.sheetnames:
+        return []
+    ws = wb["MatchdayRecords"]
+    if "MatchdayRecords" not in ws.tables:
+        return []
+
+    table = ws.tables["MatchdayRecords"]
+    min_col, min_row, max_col, max_row = range_boundaries(table.ref)
+    raw_headers = [ws.cell(min_row, c).value for c in range(min_col, max_col + 1)]
+    header_positions: Dict[str, int] = {}
+    for offset, header in enumerate(raw_headers):
+        key = _normal_header(header)
+        # Prefer the first occurrence (the canonical compact column) if aliases exist.
+        if key and key not in header_positions:
+            header_positions[key] = min_col + offset
+
+    def col(*names: str) -> Optional[int]:
+        for name in names:
+            found = header_positions.get(_normal_header(name))
+            if found is not None:
+                return found
+        return None
+
+    columns = {
+        "recordType": col("RecordType", "Record Type"),
+        "sessionId": col("SessionId", "Session ID"),
+        "matchId": col("MatchId", "Match ID"),
+        "matchDate": col("MatchDate", "Match Date"),
+        "opposition": col("Opposition"),
+        "competition": col("Competition"),
+        "playerId": col("PlayerId", "Player ID"),
+        "displayName": col("DisplayName", "Display Name"),
+        "value": col("Value"),
+        "detail": col("Detail"),
+        "submittedBy": col("SubmittedBy", "Submitted By"),
+    }
+    required = ("recordType", "playerId", "displayName", "value")
+    if any(columns[name] is None for name in required):
+        return []
+
     output: List[Dict[str, Any]] = []
-    for row in rows:
-        if str(row.get("recordType") or "").strip().lower() != "minutes":
+    for row_num in range(min_row + 1, max_row + 1):
+        def value(name: str) -> Any:
+            c = columns.get(name)
+            return clean_value(ws.cell(row_num, c).value) if c is not None else None
+
+        if str(value("recordType") or "").strip().lower() != "minutes":
             continue
-        player_id = row.get("playerId")
-        display_name = row.get("displayName")
+        player_id = value("playerId")
+        display_name = value("displayName")
         if not player_id or not display_name:
             continue
         try:
-            minutes = int(round(float(row.get("value") or 0)))
+            minutes = int(round(float(value("value") or 0)))
         except (TypeError, ValueError):
             minutes = 0
         output.append({
-            "sessionId": row.get("sessionId"),
-            "matchId": row.get("matchId"),
-            "date": row.get("matchDate"),
-            "opposition": row.get("opposition"),
-            "competition": row.get("competition"),
+            "sessionId": value("sessionId"),
+            "matchId": value("matchId"),
+            "date": value("matchDate"),
+            "opposition": value("opposition"),
+            "competition": value("competition"),
             "playerId": player_id,
             "displayName": display_name,
             "minutes": minutes,
-            "starter": str(row.get("detail") or "").strip().lower() == "starter",
-            "submittedBy": row.get("submittedBy"),
+            "starter": str(value("detail") or "").strip().lower() == "starter",
+            "submittedBy": value("submittedBy"),
         })
     return sorted(output, key=lambda item: (str(item.get("date") or ""), str(item.get("displayName") or "")))
 
