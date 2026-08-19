@@ -96,7 +96,14 @@ def mirror(workbook_path: Path) -> int:
         app = xw.App(visible=False, add_book=False)
         app.display_alerts = False
         app.screen_updating = False
-        book = app.books.open(str(workbook_path), update_links=False, read_only=False)
+        try:
+            book = app.books.open(str(workbook_path), update_links=False, read_only=False)
+        except Exception as exc:
+            raise RuntimeError(
+                "Excel could not open the master workbook for updating. "
+                "Save and close 'Welling United Red OBDSFL 26-27.xlsx' in Excel, "
+                "then run UPDATE-WELLING.bat again."
+            ) from exc
         sheet = book.sheets[SHEET_NAME]
         table = sheet.tables[TABLE_NAME]
         headers = table_headers(table)
@@ -142,7 +149,11 @@ def main() -> None:
     path = Path(sys.argv[1]).expanduser().resolve()
     if not path.exists():
         raise FileNotFoundError(path)
-    count = mirror(path)
+    try:
+        count = mirror(path)
+    except RuntimeError as exc:
+        print(f"UPDATE FAILED: {exc}")
+        raise SystemExit(1)
     print(f"AttendanceRecords mirrored from Supabase: {count} rows")
 
 
