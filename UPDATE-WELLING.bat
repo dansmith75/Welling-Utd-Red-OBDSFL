@@ -2,7 +2,7 @@
 setlocal
 cd /d "%~dp0"
 
-echo Welling United Red - Update Website
+echo Welling Dashboard - Update
 echo.
 
 echo Pulling latest updater code...
