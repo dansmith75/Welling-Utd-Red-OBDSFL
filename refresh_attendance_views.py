@@ -94,6 +94,32 @@ def attendance_sessions(book, session_type: str) -> list[dict[str, Any]]:
     return sorted(latest.values(), key=lambda s: (iso_date(s.get("Date")), str(s.get("Venue") or "")))
 
 
+def completed_matchday_squads(book) -> dict[str, set[str]]:
+    """Return completed Matchday squad membership keyed by match date.
+
+    Every player with a Matchday `Minutes` audit row was in the selected match
+    squad, including unused substitutes with zero minutes. This is therefore a
+    safe fallback for the boolean Match Attendance view when the separate
+    Match attendance form was not explicitly submitted.
+    """
+    if "MatchdayRecords" not in [s.name for s in book.sheets]:
+        return {}
+    try:
+        table = book.sheets["MatchdayRecords"].tables["MatchdayRecords"]
+    except Exception:
+        return {}
+
+    squads: dict[str, set[str]] = {}
+    for row in table_rows(table):
+        if str(row.get("RecordType") or row.get("Record Type") or "").strip().lower() != "minutes":
+            continue
+        match_date = iso_date(row.get("MatchDate") or row.get("Match Date"))
+        pid = str(row.get("PlayerId") or "").strip()
+        if match_date and pid:
+            squads.setdefault(match_date, set()).add(pid)
+    return squads
+
+
 def write_table(sheet, table_name: str, headers: list[str], rows: list[list[Any]]) -> None:
     matrix = [headers, *rows]
     old_last_row = max(sheet.used_range.last_cell.row, 2)
@@ -116,16 +142,24 @@ def refresh_match(book, players: list[str]) -> int:
     by_date: dict[str, dict[str, Any]] = {}
     for session in sessions:
         by_date[iso_date(session.get("Date"))] = session
+    matchday_squads = completed_matchday_squads(book)
 
     rows: list[list[Any]] = []
     for fixture in fixtures:
         match_date = fixture.get("Date")
+        date_key = iso_date(match_date)
         opposition = str(fixture.get("Opposition") or "").strip()
-        if not iso_date(match_date) or not opposition:
+        if not date_key or not opposition:
             continue
-        session = by_date.get(iso_date(match_date))
-        statuses = (session or {}).get("Players") or {}
-        present = [str(statuses.get(pid) or "").lower() in {"present", "late"} for pid in players]
+
+        session = by_date.get(date_key)
+        if session:
+            statuses = session.get("Players") or {}
+            present = [str(statuses.get(pid) or "").lower() in {"present", "late"} for pid in players]
+        else:
+            squad = matchday_squads.get(date_key, set())
+            present = [pid in squad for pid in players]
+
         rows.append([excel_date(match_date), excel_date(match_date), opposition, *present, sum(present)])
 
     sheet = book.sheets["Match Attendance"]
@@ -144,7 +178,7 @@ def refresh_training(book, players: list[str]) -> int:
         rows.append([excel_date(session_date), excel_date(session_date), "Training", *present, sum(present)])
 
     sheet = book.sheets["Training Attendance"]
-    write_table(sheet, "Training_Attendance", ["Date", "Day", "Session", *players, "Count"], rows)
+    write_table(sheet, "Training_Attendance", ["Date", "Day", "Session", *present if False else players, "Count"], rows)
     sheet.range("A:A").number_format = "dd-mm-yy"
     sheet.range("B:B").number_format = "dddd"
     return len(rows)
