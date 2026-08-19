@@ -5,18 +5,13 @@ cd /d "%~dp0"
 echo Welling Dashboard - Update
 echo.
 
-echo Pulling latest updater code...
-git pull --ff-only
-if errorlevel 1 goto :fail
-
-echo.
-echo Mirroring AttendanceRecords from Supabase...
 set "WELLING_XLSX=%USERPROFILE%\OneDrive\Documents\Dan\Football\Welling United Red OBDSFL 26-27.xlsx"
 if not exist "%WELLING_XLSX%" (
     echo Workbook not found: %WELLING_XLSX%
     goto :fail
 )
 
+echo Mirroring AttendanceRecords from Supabase...
 where py >nul 2>nul
 if %errorlevel%==0 (
     py mirror_attendance_records.py "%WELLING_XLSX%"
