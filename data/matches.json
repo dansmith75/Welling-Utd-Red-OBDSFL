@@ -55,9 +55,9 @@
     "competition": "Friendly",
     "venue": null,
     "postponed": false,
-    "goalsFor": null,
-    "goalsAgainst": null,
-    "result": null
+    "goalsFor": 2,
+    "goalsAgainst": 1,
+    "result": "Win"
   },
   {
     "id": "2026-08-29-welling-saturday-reserves",
