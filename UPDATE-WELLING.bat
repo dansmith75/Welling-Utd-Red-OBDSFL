@@ -11,6 +11,10 @@ if not exist "%WELLING_XLSX%" (
     goto :fail
 )
 
+rem data/*.json are generated output. If a previous update was cancelled after
+rem export but before commit, restore the published versions before rebuilding.
+git restore -- data >nul 2>nul
+
 echo Mirroring AttendanceRecords from Supabase...
 where py >nul 2>nul
 if %errorlevel%==0 (
