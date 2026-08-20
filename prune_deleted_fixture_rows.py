@@ -3,7 +3,9 @@
 
 The wide Goals / Assists / Events sheets historically contain formula-linked
 Date/Opposition cells. Deleting a row from Fixtures can leave #REF! rows behind.
-This cleanup removes only rows that no longer correspond to a current fixture.
+This cleanup is deliberately conservative: it removes explicit #REF! rows and
+fully identified rows whose fixture no longer exists, while preserving blank
+placeholder/template rows.
 """
 
 from __future__ import annotations
@@ -88,14 +90,20 @@ def prune_table(book, sheet_name: str, table_name: str, valid_keys: set[tuple[st
     for list_row_index, row in enumerate(matrix[1:], start=1):
         date_value = row[date_idx] if date_idx < len(row) else None
         opp_value = row[opp_idx] if opp_idx < len(row) else None
+        raw_date = str(date_value or "").strip()
+        raw_opp = str(opp_value or "").strip()
+
+        # Explicit broken formula references are always safe to remove.
+        if "#REF" in raw_date.upper() or "#REF" in raw_opp.upper():
+            delete_indexes.append(list_row_index)
+            continue
+
         date_key = iso_date(date_value)
         opposition = clean_text(opp_value).lower()
-        key = (date_key, opposition)
 
-        # Delete explicit formula-error rows and any row whose fixture no longer exists.
-        raw_date = str(date_value or "").upper()
-        raw_opp = str(opp_value or "").upper()
-        if "#REF" in raw_date or "#REF" in raw_opp or not date_key or not opposition or key not in valid_keys:
+        # Keep blank/template rows. Only remove a fully identified data row when
+        # its Date + Opposition no longer exists in Fixtures.
+        if date_key and opposition and (date_key, opposition) not in valid_keys:
             delete_indexes.append(list_row_index)
 
     for list_row_index in reversed(delete_indexes):
