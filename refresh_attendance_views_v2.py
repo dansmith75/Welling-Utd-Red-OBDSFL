@@ -50,7 +50,10 @@ def truthy(value: Any) -> bool:
 
 def active_player_ids(book) -> list[str]:
     rows = table_rows(book.sheets["Squad"].tables["Squad"])
-    return [str(r.get("ID") or "").strip() for r in rows if str(r.get("ID") or "").strip() and truthy(r.get("Active"))]
+    ids = [str(r.get("ID") or "").strip() for r in rows if str(r.get("ID") or "").strip() and truthy(r.get("Active"))]
+    # Attendance columns must be stable and independent of however the Squad table
+    # happens to be sorted in Excel. Player ID is the canonical ordering key.
+    return sorted(ids, key=lambda value: value.casefold())
 
 
 def attendance_sessions(book, session_type: str) -> list[dict[str, Any]]:
@@ -169,7 +172,7 @@ def main() -> None:
         match_rows = refresh_match(book, players)
         training_rows = refresh_training(book, players)
         book.save()
-        print(f"Attendance views refreshed: {len(players)} active players, {match_rows} fixtures, {training_rows} training sessions; completed Matchday squad used when match attendance was not separately submitted")
+        print(f"Attendance views refreshed: {len(players)} active players, {match_rows} fixtures, {training_rows} training sessions; player columns sorted by ID; completed Matchday squad used when match attendance was not separately submitted")
     finally:
         if book is not None:
             try: book.close()
