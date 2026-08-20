@@ -73,10 +73,13 @@ function normaliseWellingDashboardData() {
 }
 
 // Preserve inactive players in JSON for historic records, but only show the
-// active squad in current player selectors and charts.
+// active squad in current player selectors and charts. Sort by the permanent
+// player ID so re-sorting the Excel Squad table never changes dashboard order.
 dashboardPlayers = function () {
   return (store.players || [])
     .filter(player => player && player.active === true)
+    .slice()
+    .sort((a, b) => String(a.id || "").localeCompare(String(b.id || ""), undefined, { numeric: true, sensitivity: "base" }))
     .map(playerName)
     .filter(Boolean);
 };
