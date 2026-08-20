@@ -21,6 +21,16 @@ if %errorlevel%==0 (
 if errorlevel 1 goto :fail
 
 echo.
+echo Cleaning rows for deleted fixtures...
+where py >nul 2>nul
+if %errorlevel%==0 (
+    py prune_deleted_fixture_rows.py "%WELLING_XLSX%"
+) else (
+    python prune_deleted_fixture_rows.py "%WELLING_XLSX%"
+)
+if errorlevel 1 goto :fail
+
+echo.
 echo Backfilling legacy friendly MatchdayRecords...
 where py >nul 2>nul
 if %errorlevel%==0 (
