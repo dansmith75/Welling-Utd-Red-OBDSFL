@@ -39,16 +39,33 @@
       return String(parsed.goalType || parsed.detail || fallback || "").trim();
     }
     const text = String(detail || fallback || "").trim();
-    return text.toLowerCase() === "goal" ? "" : text;
+    const lower = text.toLowerCase();
+    if (["goal", "legacy player goal(s)", "guest player goal(s)"].includes(lower)) return "";
+    return text;
+  }
+
+  function displayPlayer(event, related = false) {
+    const display = related ? event.relatedPlayer : event.player;
+    const id = related ? event.relatedPlayerId : event.playerId;
+    if (display) return display;
+    if (!id) return "";
+    const squadPlayer = (store.players || []).find(player => player && player.id === id);
+    return squadPlayer?.displayName || id;
+  }
+
+  function eventCount(event) {
+    const count = Number(event.value);
+    return Number.isFinite(count) && count > 0 ? Math.round(count) : 1;
   }
 
   function formatTimelineEvent(event) {
     const type = String(event.type || "Event").trim();
     const typeLower = type.toLowerCase();
     const minute = minuteText(event.minute);
-    const player = event.player || event.playerId || "";
-    const related = event.relatedPlayer || event.relatedPlayerId || "";
+    const player = displayPlayer(event);
+    const related = displayPlayer(event, true);
     const detail = String(event.detail || "").trim();
+    const count = eventCount(event);
 
     if (typeLower === "substitution") {
       return `${minute}<strong>🔄 Substitution</strong> — ${related || "Player"} on for ${player || "Player"}`;
@@ -58,18 +75,22 @@
       const goalType = cleanGoalDetail(detail);
       const goalDetail = goalType ? ` · ${goalType}` : "";
       const assist = related ? ` <span class="timeline-muted">(assist: ${related})</span>` : "";
-      return `${minute}<strong>⚽ Goal — ${player || "Welling"}</strong>${assist}${goalDetail}`;
+      const label = count > 1 ? "Goals" : "Goal";
+      const multiplier = count > 1 ? ` ×${count}` : "";
+      return `${minute}<strong>⚽ ${label} — ${player || "Welling"}${multiplier}</strong>${assist}${goalDetail}`;
     }
 
     if (typeLower === "own goal") {
       const goalType = cleanGoalDetail(detail, "Own Goal");
       const extra = goalType && goalType.toLowerCase() !== "own goal" ? ` · ${goalType}` : "";
-      return `${minute}<strong>⚽ Own Goal — Welling</strong>${extra}`;
+      const multiplier = count > 1 ? ` ×${count}` : "";
+      return `${minute}<strong>⚽ Own Goal — Welling${multiplier}</strong>${extra}`;
     }
 
     if (typeLower === "opponent goal") {
       const goalType = cleanGoalDetail(detail);
-      return `${minute}<strong>⚽ Opponent Goal</strong>${goalType ? ` · ${goalType}` : ""}`;
+      const multiplier = count > 1 ? ` ×${count}` : "";
+      return `${minute}<strong>⚽ Opponent Goal${multiplier}</strong>${goalType ? ` · ${goalType}` : ""}`;
     }
 
     if (typeLower === "card") {
@@ -93,12 +114,12 @@
 
     Object.entries(goalRow?.goals || {}).forEach(([player, count]) => {
       const n = safeNumber(count);
-      if (n > 0) lines.push(`<li><strong>⚽ Goal${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` (${n})` : ""}</li>`);
+      if (n > 0) lines.push(`<li><strong>⚽ Goal${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` ×${n}` : ""}</li>`);
     });
 
     Object.entries(assistRow?.assists || {}).forEach(([player, count]) => {
       const n = safeNumber(count);
-      if (n > 0) lines.push(`<li><strong>Assist${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` (${n})` : ""}</li>`);
+      if (n > 0) lines.push(`<li><strong>Assist${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` ×${n}` : ""}</li>`);
     });
 
     Object.entries(eventRow?.events || {}).forEach(([player, event]) => {
