@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 
 WORKBOOK_NAME = "Welling United Red OBDSFL 26-27.xlsx"
-EXPECTED = ["players.json", "matches.json", "goals.json", "assists.json", "events.json", "attendance.json", "minutes.json"]
+EXPECTED = ["players.json", "matches.json", "goals.json", "assists.json", "events.json", "attendance.json", "minutes.json", "timeline.json"]
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 
@@ -129,6 +129,20 @@ def sync_supabase(workbook: Path) -> dict:
     return json.loads(summary_line[len(marker):])
 
 
+def tracked_non_data_changes() -> list[str]:
+    """Return tracked local changes outside generated data/*.json output."""
+    output = run(["git", "status", "--porcelain", "--untracked-files=no"], capture=True).stdout
+    changes = []
+    for line in output.splitlines():
+        if not line.strip():
+            continue
+        path = line[3:].strip().replace("\\", "/") if len(line) >= 4 else ""
+        if path.startswith("data/"):
+            continue
+        changes.append(line)
+    return changes
+
+
 def main():
     print("\n============================================")
     print(" Welling Dashboard - Update")
@@ -137,9 +151,9 @@ def main():
     print("1/7 Syncing latest website code from GitHub...")
     run(["git", "pull", "--ff-only"])
 
-    status = run(["git", "status", "--porcelain", "--untracked-files=no"], capture=True).stdout.strip()
+    status = tracked_non_data_changes()
     if status:
-        raise RuntimeError("Tracked local repo changes exist. Commit/revert them before publishing football data.")
+        raise RuntimeError("Tracked local repo changes exist outside generated data files. Commit/revert them before publishing football data.")
 
     workbook = find_workbook()
     print(f"\nMaster workbook: {workbook}")
@@ -171,6 +185,8 @@ def main():
             raise RuntimeError(f"Missing export: data/{name}")
 
     changed = run(["git", "diff", "--name-only", "--", "data"], capture=True).stdout.splitlines()
+    untracked_data = run(["git", "ls-files", "--others", "--exclude-standard", "--", "data"], capture=True).stdout.splitlines()
+    changed = list(dict.fromkeys([*changed, *untracked_data]))
     if not changed:
         print("\nNo published football-data changes found. Excel is reconciled and there is nothing to push.\n")
         return
@@ -197,6 +213,7 @@ def main():
         "data/events.json": "Events",
         "data/attendance.json": "Attendance",
         "data/minutes.json": "Playing minutes",
+        "data/timeline.json": "Match timeline",
     }
     other = [f"  * {labels[p]} updated" for p in changed if p in labels]
     print("\n".join(other) if other else "  No other data changes")
@@ -225,7 +242,7 @@ def main():
     print(" SUCCESS")
     print("============================================")
     print("Central Attendance / Matchday submissions reconciled into Excel.")
-    print("Dashboard data published, including playing minutes.")
+    print("Dashboard data published, including playing minutes and match timeline.")
     print("Attendance / Matchday will use the same shared squad and fixture feeds.")
     print("GitHub Pages normally updates shortly afterwards.\n")
 
