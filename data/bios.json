@@ -1,142 +1,65 @@
 [
   {
-    "id": "ronnie-d",
-    "displayName": "Ronnie D",
-    "position": "GK",
-    "strapLine": "Hands like glue. Volume control still under development.",
-    "bio": "Goalkeeper. Responsible for keeping the ball out, organising the defence and making routine saves look slightly more dramatic than necessary."
+    "id": "alfie-f",
+    "displayName": "Alf",
+    "position": "ST",
+    "strapLine": "Big Alf - the only one scarier is his old man after a shandy",
+    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
   },
   {
     "id": "bailey-s",
     "displayName": "Bailey",
     "position": "RB",
-    "strapLine": "Specialist in making strikers reconsider their afternoon plans.",
-    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
-  },
-  {
-    "id": "will-b",
-    "displayName": "Will",
-    "position": "LB",
-    "strapLine": "Keeps things simple: win it, clear it, blame the midfield.",
-    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
-  },
-  {
-    "id": "josh-m",
-    "displayName": "Josh",
-    "position": "CB",
-    "strapLine": "Specialist in making strikers reconsider their afternoon plans.",
+    "strapLine": "One mode - Fast - No feet.",
     "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
   },
   {
     "id": "brad-e",
     "displayName": "Brad",
     "position": "CB",
-    "strapLine": "Keeps things simple: win it, clear it, blame the midfield.",
-    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
-  },
-  {
-    "id": "frank-a",
-    "displayName": "Frank",
-    "position": "CM",
-    "strapLine": "Runs the engine room. Occasionally remembers to switch the engine off.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "rocco-b",
-    "displayName": "Rocco",
-    "position": "LW",
-    "strapLine": "The tactical Swiss Army knife. Less useful for opening bottles.",
-    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
-  },
-  {
-    "id": "george-h",
-    "displayName": "George H",
-    "position": "CDM",
-    "strapLine": "Covers every blade of grass, including a few that aren't technically on the pitch.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "ryan-b",
-    "displayName": "Ryan",
-    "position": "RW",
-    "strapLine": "Plays wherever required, which is football's polite way of saying never gets a quiet week.",
-    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
-  },
-  {
-    "id": "alfie-f",
-    "displayName": "Alf",
-    "position": "ST",
-    "strapLine": "Plays wherever required, which is football's polite way of saying never gets a quiet week.",
-    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
-  },
-  {
-    "id": "kalan-w",
-    "displayName": "Kalan",
-    "position": "CAM",
-    "strapLine": "Pass, move, repeat. Add unnecessary worldie attempt when confidence permits.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "jude-g",
-    "displayName": "Jude",
-    "position": "CM",
-    "strapLine": "Runs the engine room. Occasionally remembers to switch the engine off.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "louie-j",
-    "displayName": "Louie",
-    "position": "RW",
-    "strapLine": "Plays wherever required, which is football's polite way of saying never gets a quiet week.",
-    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
-  },
-  {
-    "id": "keiran-d",
-    "displayName": "Keiran D",
-    "position": "CDM",
-    "strapLine": "Pass, move, repeat. Add unnecessary worldie attempt when confidence permits.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "morgan-s",
-    "displayName": "Morgan",
-    "position": "CM",
-    "strapLine": "Runs the engine room. Occasionally remembers to switch the engine off.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "george-w",
-    "displayName": "George W",
-    "position": "LW",
-    "strapLine": "The tactical Swiss Army knife. Less useful for opening bottles.",
-    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
-  },
-  {
-    "id": "liam-s",
-    "displayName": "Liam",
-    "position": "CM",
-    "strapLine": "Pass, move, repeat. Add unnecessary worldie attempt when confidence permits.",
-    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
-  },
-  {
-    "id": "ronnie-t",
-    "displayName": "Ronnie T",
-    "position": "CB",
-    "strapLine": "Defends first, asks questions later. Usually after the clearance lands in another postcode.",
-    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
-  },
-  {
-    "id": "ryeley-d",
-    "displayName": "Ryeley",
-    "position": "LB",
-    "strapLine": "Keeps things simple: win it, clear it, blame the midfield.",
+    "strapLine": "Brad the Biker - like Brad Pitt, but uglier",
     "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
   },
   {
     "id": "darren-r",
     "displayName": "Darren",
     "position": "ST",
-    "strapLine": "Plays wherever required, which is football's polite way of saying never gets a quiet week.",
+    "strapLine": "The Amber assasin ??",
+    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
+  },
+  {
+    "id": "frank-a",
+    "displayName": "Frank",
+    "position": "CM",
+    "strapLine": "Frank the Tank - new but somehow seems old",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "george-h",
+    "displayName": "George H",
+    "position": "CDM",
+    "strapLine": "Big G Hicks - So calm he's virtually horizontal",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "george-w",
+    "displayName": "George W",
+    "position": "LW",
+    "strapLine": "Not enough data…",
+    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
+  },
+  {
+    "id": "imre-s",
+    "displayName": "Imre",
+    "position": "CM",
+    "strapLine": "Links defence and attack, plus several conversations the referee didn't ask for.",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "jay-p",
+    "displayName": "Jay",
+    "position": "RW",
+    "strapLine": "In - Jay - ry.",
     "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
   },
   {
@@ -147,17 +70,94 @@
     "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
   },
   {
-    "id": "jay-p",
-    "displayName": "Jay",
+    "id": "josh-m",
+    "displayName": "Josh",
+    "position": "CB",
+    "strapLine": "Good with his head and hands. Don’t mention the feet...",
+    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
+  },
+  {
+    "id": "jude-g",
+    "displayName": "Jude",
+    "position": "CM",
+    "strapLine": "All Italian, just without the ability",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "kalan-w",
+    "displayName": "Kalan",
+    "position": "CAM",
+    "strapLine": "...if Aldi made a Messi",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "keiran-d",
+    "displayName": "Keiran D",
+    "position": "CDM",
+    "strapLine": "All teeth and a whole lot of chat",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "liam-s",
+    "displayName": "Liam",
+    "position": "CM",
+    "strapLine": "Liam, \"I'll score 20 goals a season\"…",
+    "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "louie-j",
+    "displayName": "Louie",
     "position": "RW",
-    "strapLine": "Position: yes. Job: whatever needs doing.",
+    "strapLine": "Best lino we've ever had",
     "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
   },
   {
-    "id": "imre-s",
-    "displayName": "Imre",
+    "id": "morgan-s",
+    "displayName": "Morgan",
     "position": "CM",
-    "strapLine": "Links defence and attack, plus several conversations the referee didn't ask for.",
+    "strapLine": "The Joey Essex of the team",
     "bio": "Midfielder. Expected to win it, keep it, move it and somehow still have enough legs left to do the same thing again two minutes later."
+  },
+  {
+    "id": "rocco-b",
+    "displayName": "Rocco",
+    "position": "LW",
+    "strapLine": "Extraordinary ability not to pass the ball at the right time",
+    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
+  },
+  {
+    "id": "ronnie-d",
+    "displayName": "Ronnie D",
+    "position": "GK",
+    "strapLine": "Mad as a box of frogs. Nuclear powered.",
+    "bio": "Goalkeeper. Responsible for keeping the ball out, organising the defence and making routine saves look slightly more dramatic than necessary."
+  },
+  {
+    "id": "ronnie-t",
+    "displayName": "Ronnie T",
+    "position": "CB",
+    "strapLine": "now, wheres my wallet ??",
+    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
+  },
+  {
+    "id": "ryan-b",
+    "displayName": "Ryan",
+    "position": "RW",
+    "strapLine": "Saturday Reject",
+    "bio": "Versatile squad player. Capable of filling several positions and therefore at constant risk of becoming far too useful for their own good."
+  },
+  {
+    "id": "ryeley-d",
+    "displayName": "Ryeley",
+    "position": "LB",
+    "strapLine": "No, I'm Batman.",
+    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
+  },
+  {
+    "id": "will-b",
+    "displayName": "Will",
+    "position": "LB",
+    "strapLine": "Will \"Don't forget you are last man\" Beecham  - Oh God, not again !!",
+    "bio": "Defender. Happy in a duel, happier after a clean sheet, and happiest when somebody else has to chase the ball into the car park."
   }
 ]
