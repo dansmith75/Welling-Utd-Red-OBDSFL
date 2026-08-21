@@ -81,6 +81,7 @@ def main() -> None:
             "relatedPlayer": col("RelatedDisplayName", "Related Display Name"),
             "minute": col("Minute"),
             "detail": col("Detail"),
+            "value": col("Value"),
             "source": col("Source"),
         }
 
@@ -119,6 +120,7 @@ def main() -> None:
                 "relatedPlayerId": value("relatedPlayerId"),
                 "relatedPlayer": value("relatedPlayer"),
                 "detail": value("detail"),
+                "value": value("value"),
                 "source": value("source"),
             })
 
