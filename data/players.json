@@ -30,8 +30,8 @@
     "position": "CB"
   },
   {
-    "id": "george-w",
-    "displayName": "George W",
+    "id": "frank-a",
+    "displayName": "Frank",
     "active": true,
     "position": "CM"
   },
@@ -66,6 +66,12 @@
     "position": "CAM"
   },
   {
+    "id": "jude-g",
+    "displayName": "Jude",
+    "active": true,
+    "position": "CM"
+  },
+  {
     "id": "louie-j",
     "displayName": "Louie",
     "active": true,
@@ -78,16 +84,16 @@
     "position": "CDM"
   },
   {
-    "id": "jude-g",
-    "displayName": "Jude",
+    "id": "morgan-s",
+    "displayName": "Morgan",
     "active": true,
     "position": "CM"
   },
   {
-    "id": "joe-g",
-    "displayName": "Joe",
-    "active": false,
-    "position": "CDM"
+    "id": "george-w",
+    "displayName": "George W",
+    "active": true,
+    "position": "LW"
   },
   {
     "id": "liam-s",
@@ -102,18 +108,6 @@
     "position": "CB"
   },
   {
-    "id": "jay-p",
-    "displayName": "Jay",
-    "active": true,
-    "position": "RW"
-  },
-  {
-    "id": "morgan-s",
-    "displayName": "Morgan",
-    "active": true,
-    "position": "CM"
-  },
-  {
     "id": "ryeley-d",
     "displayName": "Ryeley",
     "active": true,
@@ -126,10 +120,16 @@
     "position": "ST"
   },
   {
-    "id": "frank-a",
-    "displayName": "Frank",
-    "active": true,
-    "position": "LW"
+    "id": "joe-g",
+    "displayName": "Joe",
+    "active": false,
+    "position": "CDM"
+  },
+  {
+    "id": "jay-p",
+    "displayName": "Jay",
+    "active": false,
+    "position": "RW"
   },
   {
     "id": "imre-s",

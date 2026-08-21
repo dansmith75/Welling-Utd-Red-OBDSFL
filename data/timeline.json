@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "matchId": "2026-07-31-welling-u18-s",
+    "date": "2026-07-31",
+    "opposition": "Welling U18's",
+    "competition": "Friendly",
+    "events": [
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "alfie-f",
+        "player": "alfie-f",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "darren-r",
+        "player": "darren-r",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "kalan-w",
+        "player": "kalan-w",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      }
+    ]
+  },
+  {
+    "matchId": "2026-08-02-ravensbury-fc",
+    "date": "2026-08-02",
+    "opposition": "Ravensbury FC",
+    "competition": "Friendly",
+    "events": [
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "alfie-f",
+        "player": "alfie-f",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      }
+    ]
+  },
+  {
+    "matchId": "2026-08-09-charity-tournament",
+    "date": "2026-08-09",
+    "opposition": "Charity Tournament",
+    "competition": "Friendly",
+    "events": [
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "darren-r",
+        "player": "darren-r",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "george-w",
+        "player": "george-w",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "kalan-w",
+        "player": "kalan-w",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Goal",
+        "minute": null,
+        "playerId": "rocco-b",
+        "player": "rocco-b",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Legacy player goal(s)",
+        "source": "Legacy Excel backfill"
+      },
+      {
+        "type": "Own Goal",
+        "minute": null,
+        "playerId": null,
+        "player": null,
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Uncredited own goal(s)",
+        "source": "Legacy Excel backfill"
+      }
+    ]
+  },
+  {
+    "matchId": "2026-08-23-crayford-arrows",
+    "date": "2026-08-23",
+    "opposition": "Crayford Arrows",
+    "competition": "Friendly",
+    "events": [
+      {
+        "type": "Card",
+        "minute": 0,
+        "playerId": "liam-s",
+        "player": "Liam",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Yellow",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Card",
+        "minute": 0,
+        "playerId": "jude-g",
+        "player": "Jude",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Red",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Card",
+        "minute": 0,
+        "playerId": "george-h",
+        "player": "George H",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Yellow",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Opponent Goal",
+        "minute": 0,
+        "playerId": null,
+        "player": null,
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "{\"type\": \"Opponent Goal\", \"minute\": 0, \"goalType\": \"Open Play\"}",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Substitution",
+        "minute": 0,
+        "playerId": "imre-s",
+        "player": "Imre",
+        "relatedPlayerId": "keiran-d",
+        "relatedPlayer": "Keiran D",
+        "detail": "OFF → ON",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Substitution",
+        "minute": 0,
+        "playerId": "joe-g",
+        "player": "Joe",
+        "relatedPlayerId": "imre-s",
+        "relatedPlayer": "Imre",
+        "detail": "OFF → ON",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Substitution",
+        "minute": 0,
+        "playerId": "frank-a",
+        "player": "Frank",
+        "relatedPlayerId": "alfie-f",
+        "relatedPlayer": "Alf",
+        "detail": "OFF → ON",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Note",
+        "minute": 1,
+        "playerId": "keiran-d",
+        "player": "Keiran D",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "nothing",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Note",
+        "minute": 1,
+        "playerId": "george-h",
+        "player": "George H",
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "Shut himself",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Substitution",
+        "minute": 1,
+        "playerId": "ryan-b",
+        "player": "Ryan",
+        "relatedPlayerId": "ryeley-d",
+        "relatedPlayer": "Ryeley",
+        "detail": "OFF → ON",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Opponent Goal",
+        "minute": 6,
+        "playerId": null,
+        "player": null,
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "{\"type\": \"Opponent Goal\", \"minute\": 6, \"goalType\": \"Penalty\"}",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Goal",
+        "minute": 10,
+        "playerId": "ryan-b",
+        "player": "Ryan",
+        "relatedPlayerId": "rocco-b",
+        "relatedPlayer": "Rocco",
+        "detail": "Open Play",
+        "source": "Matchday App"
+      },
+      {
+        "type": "Own Goal",
+        "minute": 11,
+        "playerId": null,
+        "player": null,
+        "relatedPlayerId": null,
+        "relatedPlayer": null,
+        "detail": "{\"type\": \"Own Goal\", \"minute\": 11, \"goalType\": \"Own Goal\", \"playerId\": \"\"}",
+        "source": "Matchday App"
+      }
+    ]
+  }
+]
