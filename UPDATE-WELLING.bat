@@ -65,6 +65,16 @@ if %errorlevel%==0 (
 if errorlevel 1 goto :fail
 
 echo.
+echo Refreshing player bios and straplines...
+where py >nul 2>nul
+if %errorlevel%==0 (
+    py ensure_player_bios.py "%WELLING_XLSX%"
+) else (
+    python ensure_player_bios.py "%WELLING_XLSX%"
+)
+if errorlevel 1 goto :fail
+
+echo.
 echo Exporting detailed match timeline...
 where py >nul 2>nul
 if %errorlevel%==0 (
