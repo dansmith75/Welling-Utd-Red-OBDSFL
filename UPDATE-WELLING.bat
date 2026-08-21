@@ -35,6 +35,16 @@ if %errorlevel%==0 (
 if errorlevel 1 goto :fail
 
 echo.
+echo Cleaning removed Matchday test data...
+where py >nul 2>nul
+if %errorlevel%==0 (
+    py cleanup_stale_matchday_data.py "%WELLING_XLSX%"
+) else (
+    python cleanup_stale_matchday_data.py "%WELLING_XLSX%"
+)
+if errorlevel 1 goto :fail
+
+echo.
 echo Backfilling legacy friendly MatchdayRecords...
 where py >nul 2>nul
 if %errorlevel%==0 (
