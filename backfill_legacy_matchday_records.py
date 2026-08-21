@@ -9,8 +9,10 @@ Rules:
 - Only matches without an existing non-legacy MatchdayRecords session are backfilled.
 - Legacy rows are rebuilt on every run, so edits to Goals/Assists/Events remain in sync.
 - Player goals/assists are stored as aggregate Value counts.
-- If Fixtures Goals For exceeds credited player goals, the difference is recorded
-  as Own Goal(s), with no player credited.
+- Known guest-player goals can be represented in MatchdayRecords without adding the
+  guest to the Squad or normal player-stat areas of the Dashboard.
+- Any remaining Goals For gap after credited and known guest goals is recorded as
+  an uncredited own goal.
 - No starters/substitutions/minutes are invented for historical matches.
 """
 
@@ -31,6 +33,13 @@ HEADERS = [
     "Minute", "Detail", "Value", "SubmittedBy", "StartedAt", "FinishedAt", "Source",
 ]
 
+# Historical scorers who were not members of the tracked squad. These entries are
+# deliberately MatchdayRecords-only, so they can appear in a match timeline without
+# being added to player selectors, charts or season player totals.
+LEGACY_GUEST_GOALS: dict[tuple[str, str], list[tuple[str, int]]] = {
+    ("2026-08-09", "charity tournament"): [("Daniel", 1)],
+}
+
 
 def iso_date(value: Any) -> str:
     if value in (None, ""):
@@ -40,7 +49,6 @@ def iso_date(value: Any) -> str:
     if isinstance(value, date):
         return value.isoformat()
     if isinstance(value, (int, float)):
-        # Excel serial date, 1900 date system.
         try:
             return (datetime(1899, 12, 30) + timedelta(days=float(value))).date().isoformat()
         except Exception:
@@ -112,12 +120,15 @@ def squad_name_map(book) -> dict[str, tuple[str, str]]:
     _, table = get_table(book, "Squad", "Squad")
     if table is None:
         return {}
-    result = {}
+    result: dict[str, tuple[str, str]] = {}
     for row in table_rows(table):
         pid = str(row.get("ID") or "").strip()
         display = str(row.get("Display Name") or row.get("Name") or "").strip()
         if not pid or not display:
             continue
+        # Legacy wide sheets may now use either the permanent ID or the display name
+        # as the player-column heading. Resolve both to the same friendly display name.
+        result[pid.lower()] = (pid, display)
         result[display.lower()] = (pid, display)
     return result
 
@@ -245,8 +256,13 @@ def build_legacy_rows(book, real_matches: set[tuple[str, str]]) -> list[dict[str
                 event_value = 1
             event_items.append((pid, display, detail, event_value))
 
+        guest_goals = LEGACY_GUEST_GOALS.get(key, [])
+        guest_goal_total = sum(count for _, count in guest_goals)
+        if guest_goal_total:
+            has_data = True
+
         goals_for = numeric_count(fixture.get("Goals For"))
-        own_goals = max(0, goals_for - credited_goals) if goals_for else 0
+        own_goals = max(0, goals_for - credited_goals - guest_goal_total) if goals_for else 0
         if own_goals:
             has_data = True
 
@@ -256,6 +272,10 @@ def build_legacy_rows(book, real_matches: set[tuple[str, str]]) -> list[dict[str
         add(key, competition, "Session", "session", detail=f"{opposition} · {competition}")
         for i, (pid, display, count) in enumerate(goal_items):
             add(key, competition, "Goal", f"goal-{i}-{pid}", pid, display, "Legacy player goal(s)", count)
+        for i, (guest_name, count) in enumerate(guest_goals):
+            # PlayerId intentionally blank: Daniel can appear in this match timeline without
+            # becoming a squad player or leaking into Dashboard player totals/charts.
+            add(key, competition, "Goal", f"guest-goal-{i}", "", guest_name, "Guest player goal(s)", count)
         if own_goals:
             add(key, competition, "Own Goal", "own-goal", detail="Uncredited own goal(s)", value=own_goals)
         for i, (pid, display, count) in enumerate(assist_items):
@@ -319,7 +339,7 @@ def main() -> None:
         own_goals = sum(numeric_count(r.get("Value")) for r in legacy_rows if r.get("RecordType") == "Own Goal")
         assists = sum(numeric_count(r.get("Value")) for r in legacy_rows if r.get("RecordType") == "Assist")
         events = sum(1 for r in legacy_rows if r.get("RecordType") == "Event")
-        print(f"Legacy MatchdayRecords refreshed: {sessions} matches, {goals} player goals, {own_goals} own goals, {assists} assists, {events} events")
+        print(f"Legacy MatchdayRecords refreshed: {sessions} matches, {goals} player/guest goals, {own_goals} own goals, {assists} assists, {events} events")
     finally:
         if book is not None:
             try: book.close()
