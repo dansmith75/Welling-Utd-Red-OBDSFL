@@ -21,6 +21,27 @@
     );
   }
 
+  function parsedDetail(detail) {
+    if (!detail) return null;
+    if (typeof detail === "object") return detail;
+    const text = String(detail).trim();
+    if (!text.startsWith("{") || !text.endsWith("}")) return null;
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function cleanGoalDetail(detail, fallback = "") {
+    const parsed = parsedDetail(detail);
+    if (parsed) {
+      return String(parsed.goalType || parsed.detail || fallback || "").trim();
+    }
+    const text = String(detail || fallback || "").trim();
+    return text.toLowerCase() === "goal" ? "" : text;
+  }
+
   function formatTimelineEvent(event) {
     const type = String(event.type || "Event").trim();
     const typeLower = type.toLowerCase();
@@ -30,29 +51,35 @@
     const detail = String(event.detail || "").trim();
 
     if (typeLower === "substitution") {
-      return `${minute}<strong>Substitution</strong> — ${related || "Player"} on for ${player || "Player"}`;
+      return `${minute}<strong>🔄 Substitution</strong> — ${related || "Player"} on for ${player || "Player"}`;
     }
 
     if (typeLower === "goal") {
-      const goalDetail = detail && detail.toLowerCase() !== "goal" ? ` · ${detail}` : "";
+      const goalType = cleanGoalDetail(detail);
+      const goalDetail = goalType ? ` · ${goalType}` : "";
       const assist = related ? ` <span class="timeline-muted">(assist: ${related})</span>` : "";
-      return `${minute}<strong>Goal — ${player || "Welling"}</strong>${assist}${goalDetail}`;
+      return `${minute}<strong>⚽ Goal — ${player || "Welling"}</strong>${assist}${goalDetail}`;
     }
 
     if (typeLower === "own goal") {
-      return `${minute}<strong>Own Goal — Welling</strong>${detail ? ` · ${detail}` : ""}`;
+      const goalType = cleanGoalDetail(detail, "Own Goal");
+      const extra = goalType && goalType.toLowerCase() !== "own goal" ? ` · ${goalType}` : "";
+      return `${minute}<strong>⚽ Own Goal — Welling</strong>${extra}`;
     }
 
     if (typeLower === "opponent goal") {
-      return `${minute}<strong>Opponent Goal</strong>${detail ? ` · ${detail}` : ""}`;
+      const goalType = cleanGoalDetail(detail);
+      return `${minute}<strong>⚽ Opponent Goal</strong>${goalType ? ` · ${goalType}` : ""}`;
     }
 
     if (typeLower === "card") {
-      return `${minute}<strong>${detail || "Card"}</strong>${player ? ` — ${player}` : ""}`;
+      const card = detail || "Card";
+      const icon = card.toLowerCase().includes("red") ? "🟥" : card.toLowerCase().includes("yellow") ? "🟨" : "🟨";
+      return `${minute}<strong>${icon} ${card}</strong>${player ? ` — ${player}` : ""}`;
     }
 
     if (typeLower === "note") {
-      return `${minute}<strong>Note</strong>${player ? ` — ${player}` : ""}${detail ? `: ${detail}` : ""}`;
+      return `${minute}<strong>📝 Note</strong>${player ? ` — ${player}` : ""}${detail ? `: ${detail}` : ""}`;
     }
 
     return `${minute}<strong>${type}</strong>${player ? ` — ${player}` : ""}${detail ? ` · ${detail}` : ""}`;
@@ -66,7 +93,7 @@
 
     Object.entries(goalRow?.goals || {}).forEach(([player, count]) => {
       const n = safeNumber(count);
-      if (n > 0) lines.push(`<li><strong>Goal${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` (${n})` : ""}</li>`);
+      if (n > 0) lines.push(`<li><strong>⚽ Goal${n > 1 ? "s" : ""}</strong> — ${player}${n > 1 ? ` (${n})` : ""}</li>`);
     });
 
     Object.entries(assistRow?.assists || {}).forEach(([player, count]) => {
@@ -75,7 +102,7 @@
     });
 
     Object.entries(eventRow?.events || {}).forEach(([player, event]) => {
-      if (isRealEvent(event)) lines.push(`<li><strong>${player}</strong> — ${event}</li>`);
+      if (isRealEvent(event)) lines.push(`<li><strong>📝 ${player}</strong> — ${event}</li>`);
     });
 
     return lines;
