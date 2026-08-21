@@ -14,14 +14,14 @@
     ) || null;
   }
 
-  function fallbackBio(position) {
+  function fallbackStrapline(position) {
     const p = String(position || "").toLowerCase();
-    if (/keeper|goalkeeper|\bgk\b/.test(p)) return "Goalkeeper. Keeps the ball out, organises the defence and reserves the right to shout at everybody while doing it.";
-    if (/wing|wide/.test(p)) return "Wide player. There to stretch the pitch, attack defenders and make full-backs question their career choices.";
-    if (/striker|forward|\bcf\b/.test(p)) return "Forward. Lives around the penalty area, survives on chances and is permanently convinced the next one is going in.";
-    if (/mid|\bcm\b|\bdm\b|\bam\b/.test(p)) return "Midfielder. Wins it, keeps it, moves it and somehow gets asked to do the same thing again thirty seconds later.";
-    if (/back|def|\bcb\b|\blb\b|\brb\b/.test(p)) return "Defender. Happy in a duel, happier after a clean sheet and happiest when the striker stops enjoying himself.";
-    return "Versatile squad player. Position: wherever the manager has created a problem that needs solving.";
+    if (/keeper|goalkeeper|\bgk\b/.test(p)) return "Hands like glue. Volume control still under development.";
+    if (/wing|wide/.test(p)) return "One mission: get at the full-back until one of them needs a sit down.";
+    if (/striker|forward|\bcf\b/.test(p)) return "Shoots on sight. Definition of sight may vary.";
+    if (/mid|\bcm\b|\bdm\b|\bam\b/.test(p)) return "Covers every blade of grass, including a few that aren't technically on the pitch.";
+    if (/back|def|\bcb\b|\blb\b|\brb\b/.test(p)) return "Built for tackles, headers and insisting it was definitely all ball.";
+    return "Position: yes. Job: whatever needs doing.";
   }
 
   // The page contains both upcoming fixtures and completed results, so the
@@ -89,7 +89,7 @@
     const squad = playerRecord(player) || {};
     const bio = bioRecord(player) || {};
     const position = bio.position || squad.position || "Squad Player";
-    const bioText = bio.bio || fallbackBio(position);
+    const strapLine = bio.strapLine || fallbackStrapline(position);
 
     const oldSubtitle = profileHeader.querySelector(".profile-subtitle");
     if (oldSubtitle) oldSubtitle.remove();
@@ -101,7 +101,7 @@
     }
 
     profileHeader.insertAdjacentHTML("beforeend", `
-      <p class="player-bio">${bioText}</p>
+      <div class="player-strapline">“${strapLine}”</div>
     `);
   };
 
@@ -125,11 +125,12 @@
       font-weight:bold;
       line-height:1;
     }
-    .player-bio {
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.55;
-      max-width:850px;
+    .player-strapline {
+      margin-top:10px;
+      color:var(--text);
+      font-weight:bold;
+      font-style:italic;
+      line-height:1.45;
     }
   `;
   document.head.appendChild(style);
