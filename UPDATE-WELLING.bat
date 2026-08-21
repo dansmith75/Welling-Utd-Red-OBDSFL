@@ -65,6 +65,16 @@ if %errorlevel%==0 (
 if errorlevel 1 goto :fail
 
 echo.
+echo Exporting detailed match timeline...
+where py >nul 2>nul
+if %errorlevel%==0 (
+    py export_match_timeline.py "%WELLING_XLSX%"
+) else (
+    python export_match_timeline.py "%WELLING_XLSX%"
+)
+if errorlevel 1 goto :fail
+
+echo.
 where py >nul 2>nul
 if %errorlevel%==0 (
     py update_welling.py
