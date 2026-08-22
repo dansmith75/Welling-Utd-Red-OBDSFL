@@ -98,20 +98,25 @@
 
     <section id="goals" class="page">
       <div class="drill-label" id="goalsDrillLabel"></div>
+      <div class="card goals-toggle-card">
+        <div class="goals-toggle" id="goalsToggle">
+          <button type="button" class="goals-mode active" data-goals-mode="goals">Goals</button>
+          <button type="button" class="goals-mode" data-goals-mode="assists">Assists</button>
+        </div>
+      </div>
       <div class="card filters">
         <h3>Competition</h3>
         <label><input type="radio" name="goalComp" value="All" checked> All</label>
         <label><input type="radio" name="goalComp" value="League"> League</label>
         <label><input type="radio" name="goalComp" value="Cup"> Cup</label>
-        <label><input type="radio" name="goalComp" value="Shield"> Shield</label>
         <label><input type="radio" name="goalComp" value="Friendly"> Friendly</label>
         <h3>Home / Away</h3>
         <label><input type="radio" name="goalHA" value="Both" checked> Both</label>
         <label><input type="radio" name="goalHA" value="Home"> Home</label>
         <label><input type="radio" name="goalHA" value="Away"> Away</label>
       </div>
-      <div class="chart-container"><h2 class="chart-title">Goals by Player</h2><div class="chart-scroll"><div class="chart-box"><canvas id="goalsByPlayerChart"></canvas></div></div></div>
-      <div class="chart-container"><h2 class="chart-title">Assists by Player</h2><div class="chart-scroll"><div class="chart-box"><canvas id="assistsByPlayerChart"></canvas></div></div></div>
+      <div class="chart-container" id="goalsChartContainer"><h2 class="chart-title">Goals by Player</h2><div class="chart-scroll"><div class="chart-box"><canvas id="goalsByPlayerChart"></canvas></div></div></div>
+      <div class="chart-container" id="assistsChartContainer"><h2 class="chart-title">Assists by Player</h2><div class="chart-scroll"><div class="chart-box"><canvas id="assistsByPlayerChart"></canvas></div></div></div>
     </section>
 
     <section id="attendance" class="page">
@@ -163,5 +168,6 @@
   <script src="result-info.js"></script>
   <script src="dashboard-final-polish.js"></script>
   <script src="dashboard-season-ui.js"></script>
+  <script src="goals-toggle.js"></script>
 </body>
 </html>
