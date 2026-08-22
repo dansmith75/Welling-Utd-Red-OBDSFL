@@ -102,8 +102,8 @@
     const rows = store.links || []; empty.style.display = rows.length ? "none" : "block";
     if (!rows.length) { target.innerHTML = ""; return; }
     const groups = new Map();
-    rows.forEach(row => { const category = row.category || "Useful Links"; if (!groups.has(category)) groups.set(category, []); groups.get(category).push(row); });
-    target.innerHTML = [...groups.entries()].map(([category, items]) => `<div class="link-group"><h3>${category}</h3><div class="useful-links-grid">${items.map(item => `<a class="useful-link-card" href="${item.url}" target="_blank" rel="noopener noreferrer"><strong>${item.name}</strong>${item.description ? `<span>${item.description}</span>` : ""}</a>`).join("")}</div></div>`).join("");
+    rows.forEach(row => { const category = String(row.category || "").trim(); if (!groups.has(category)) groups.set(category, []); groups.get(category).push(row); });
+    target.innerHTML = [...groups.entries()].map(([category, items]) => `<div class="link-group">${category && category.toLowerCase() !== "useful links" ? `<h3>${category}</h3>` : ""}<div class="useful-links-grid">${items.map(item => `<a class="useful-link-card" href="${item.url}" target="_blank" rel="noopener noreferrer"><strong>${item.name}</strong>${item.description ? `<span>${item.description}</span>` : ""}</a>`).join("")}</div></div>`).join("");
   }
 
   function renderLeagueTable() {
