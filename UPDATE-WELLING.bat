@@ -57,6 +57,14 @@ if %errorlevel%==0 (py ensure_player_bios.py "%WELLING_XLSX%") else (python ensu
 if errorlevel 1 goto :fail
 
 echo.
+echo Rebuilding League Table from FA Full-Time teams/results...
+where py >nul 2>nul
+if %errorlevel%==0 (py refresh_league_from_results.py "%WELLING_XLSX%") else (python refresh_league_from_results.py "%WELLING_XLSX%")
+if errorlevel 1 (
+    echo WARNING: Results-based league refresh failed. Existing League Table will be retained.
+)
+
+echo.
 echo Refreshing Useful Links and League Table feeds...
 where py >nul 2>nul
 if %errorlevel%==0 (py refresh_dashboard_extras.py "%WELLING_XLSX%") else (python refresh_dashboard_extras.py "%WELLING_XLSX%")
