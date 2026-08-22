@@ -1,5 +1,12 @@
 [
   {
+    "category": "Payments",
+    "name": "Pay Team Fees",
+    "url": "your Revolut payment link",
+    "description": "Pay monthly fees / match costs",
+    "sortOrder": 1
+  },
+  {
     "category": "Useful Links",
     "name": "The FA - Orpington & Bromley District Sunday Football League",
     "url": "https://fulltime.thefa.com/index.html?league=3117271&selectedSeason=964418083&selectedDivision=387107891&selectedCompetition=0&selectedFixtureGroupKey=1_822238577",
