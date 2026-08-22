@@ -13,15 +13,9 @@ from typing import Any
 LINK_HEADERS = ["Category", "Name", "URL", "Description", "Active", "Sort Order"]
 LEAGUE_HEADERS = ["Position", "Team", "P", "W", "D", "L", "GF", "GA", "GD", "Pts"]
 FA_LEAGUE_TABLE_URL = "https://fulltime.thefa.com/table.html?league=3117271&selectedSeason=964418083&selectedDivision=387107891&selectedCompetition=0&selectedFixtureGroupKey=1_822238577"
-
-# Full-Time's public page exposes several IDs. The third-party API expects the
-# division-season/feed id (822238577), not selectedDivision (387107891).
 FULLTIME_API_URLS = [
     "https://faapi.jwhsolutions.co.uk/api/League/822238577",
-    "https://faapi.jwhsolutions.co.uk/api/League/822238577/season/2026-27",
     "https://faapi.jwhsolutions.co.uk/api/League/822238577/season/964418083",
-    "https://faapi.jwhsolutions.co.uk/api/League/387107891",
-    "https://faapi.jwhsolutions.co.uk/api/League/387107891/season/2026-27",
 ]
 
 
@@ -90,13 +84,15 @@ def rewrite_table(sheet, table, headers, rows):
     table.resize(sheet.range((r, c), (end_row, end_col)))
     sheet.range((r, c), (r, end_col)).value = [headers]
     if rows:
-        sheet.range((r + 1, c), (r + len(rows), end_col)).value = [[row.get(h, "") for h in headers] for row in rows]
+        matrix = [[row.get(h, "") for h in headers] for row in rows]
+        sheet.range((r + 1, c), (r + len(rows), end_col)).value = matrix
     else:
         sheet.range((r + 1, c), (r + 1, end_col)).clear_contents()
 
 
 def ensure_table(book, sheet_name, table_name, headers):
-    sheet = book.sheets[sheet_name] if sheet_name in [s.name for s in book.sheets] else book.sheets.add(sheet_name, after=book.sheets[-1])
+    names = [s.name for s in book.sheets]
+    sheet = book.sheets[sheet_name] if sheet_name in names else book.sheets.add(sheet_name, after=book.sheets[-1])
     try:
         table = sheet.tables[table_name]
     except Exception:
@@ -132,7 +128,7 @@ def clean(value):
 
 def fetch_json(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=25) as response:
+    with urllib.request.urlopen(req, timeout=20) as response:
         return json.loads(response.read().decode("utf-8", errors="replace"))
 
 
@@ -174,7 +170,8 @@ def normalise_api(payload):
                 continue
             rows.append({
                 "Position": number(pick(item, aliases["Position"], len(rows) + 1)) or len(rows) + 1,
-                "Team": team, "P": number(played) or 0,
+                "Team": team,
+                "P": number(played) or 0,
                 "W": number(pick(item, aliases["W"], 0)) or 0,
                 "D": number(pick(item, aliases["D"], 0)) or 0,
                 "L": number(pick(item, aliases["L"], 0)) or 0,
@@ -192,8 +189,7 @@ def fetch_api_league():
     failures = []
     for url in FULLTIME_API_URLS:
         try:
-            rows = normalise_api(fetch_json(url))
-            return rows, url
+            return normalise_api(fetch_json(url)), url
         except Exception as exc:
             failures.append(f"{url} -> {exc}")
     raise RuntimeError("; ".join(failures))
@@ -201,7 +197,7 @@ def fetch_api_league():
 
 def fetch_fa_html():
     req = urllib.request.Request(FA_LEAGUE_TABLE_URL, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
-    with urllib.request.urlopen(req, timeout=25) as response:
+    with urllib.request.urlopen(req, timeout=20) as response:
         markup = response.read().decode("utf-8", errors="replace")
     parser = TableParser(); parser.feed(markup)
     aliases = {
@@ -226,11 +222,18 @@ def fetch_fa_html():
                 def cell(key):
                     i = indices[key]
                     return raw[i] if i is not None and i < len(raw) else ""
-                rows.append({"Position": number(cell("Position")) or len(rows)+1, "Team": team,
-                             "P": number(cell("P")) or 0, "W": number(cell("W")) or 0,
-                             "D": number(cell("D")) or 0, "L": number(cell("L")) or 0,
-                             "GF": number(cell("GF")) or 0, "GA": number(cell("GA")) or 0,
-                             "GD": number(cell("GD")) or 0, "Pts": number(cell("Pts")) or 0})
+                rows.append({
+                    "Position": number(cell("Position")) or len(rows)+1,
+                    "Team": team,
+                    "P": number(cell("P")) or 0,
+                    "W": number(cell("W")) or 0,
+                    "D": number(cell("D")) or 0,
+                    "L": number(cell("L")) or 0,
+                    "GF": number(cell("GF")) or 0,
+                    "GA": number(cell("GA")) or 0,
+                    "GD": number(cell("GD")) or 0,
+                    "Pts": number(cell("Pts")) or 0,
+                })
             if len(rows) >= 2:
                 return rows
     raise RuntimeError("could not identify standings table")
@@ -241,42 +244,97 @@ def league_json(rows):
     for row in rows:
         team = str(row.get("Team") or "").strip()
         if team:
-            out.append({"position": number(row.get("Position")), "team": team,
-                        "played": number(row.get("P")) or 0, "won": number(row.get("W")) or 0,
-                        "drawn": number(row.get("D")) or 0, "lost": number(row.get("L")) or 0,
-                        "goalsFor": number(row.get("GF")) or 0, "goalsAgainst": number(row.get("GA")) or 0,
-                        "goalDifference": number(row.get("GD")) or 0, "points": number(row.get("Pts")) or 0})
+            out.append({
+                "position": number(row.get("Position")),
+                "team": team,
+                "played": number(row.get("P")) or 0,
+                "won": number(row.get("W")) or 0,
+                "drawn": number(row.get("D")) or 0,
+                "lost": number(row.get("L")) or 0,
+                "goalsFor": number(row.get("GF")) or 0,
+                "goalsAgainst": number(row.get("GA")) or 0,
+                "goalDifference": number(row.get("GD")) or 0,
+                "points": number(row.get("Pts")) or 0,
+            })
     out.sort(key=lambda r: (r["position"] if isinstance(r["position"], (int, float)) else 999, r["team"].lower()))
     return out
+
+
+def published_rows(path: Path):
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    if not isinstance(data, list):
+        return []
+    rows = []
+    for item in data:
+        if not isinstance(item, dict) or not str(item.get("team") or "").strip():
+            continue
+        rows.append({
+            "Position": item.get("position"),
+            "Team": item.get("team"),
+            "P": item.get("played", 0),
+            "W": item.get("won", 0),
+            "D": item.get("drawn", 0),
+            "L": item.get("lost", 0),
+            "GF": item.get("goalsFor", 0),
+            "GA": item.get("goalsAgainst", 0),
+            "GD": item.get("goalDifference", 0),
+            "Pts": item.get("points", 0),
+        })
+    return rows
 
 
 def main():
     if len(sys.argv) != 2:
         raise SystemExit("Usage: python refresh_dashboard_extras.py /path/to/workbook.xlsx")
+
     workbook = Path(sys.argv[1]).expanduser().resolve()
+    data_dir = Path(__file__).resolve().parent / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    league_json_path = data_dir / "league-table.json"
+    last_published_rows = published_rows(league_json_path)
+
     import xlwings as xw
-    app = xw.App(visible=False, add_book=False); app.display_alerts = False; app.screen_updating = False
+    app = xw.App(visible=False, add_book=False)
+    app.display_alerts = False
+    app.screen_updating = False
     book = None
     try:
         book = app.books.open(str(workbook), update_links=False, read_only=False)
         links_sheet, links_table = ensure_table(book, "Web Links", "WebLinks", LINK_HEADERS)
         league_sheet, league_table = ensure_table(book, "League Table", "LeagueTable", LEAGUE_HEADERS)
+
         try:
-            links_sheet.range("A:F").column_width = 18; links_sheet.range("C:C").column_width = 42; links_sheet.range("D:D").column_width = 34
-            league_sheet.range("A:J").column_width = 10; league_sheet.range("B:B").column_width = 28
+            links_sheet.range("A:F").column_width = 18
+            links_sheet.range("C:C").column_width = 42
+            links_sheet.range("D:D").column_width = 34
+            league_sheet.range("A:J").column_width = 10
+            league_sheet.range("B:B").column_width = 28
         except Exception:
             pass
 
         links = []
         for row in table_rows(links_table):
-            url = str(row.get("URL") or "").strip(); name = str(row.get("Name") or "").strip()
+            url = str(row.get("URL") or "").strip()
+            name = str(row.get("Name") or "").strip()
             if url and name and truthy(row.get("Active")):
-                links.append({"category": str(row.get("Category") or "Useful Links").strip() or "Useful Links",
-                              "name": name, "url": url, "description": str(row.get("Description") or "").strip(),
-                              "sortOrder": number(row.get("Sort Order")) or 999})
+                links.append({
+                    "category": str(row.get("Category") or "Useful Links").strip() or "Useful Links",
+                    "name": name,
+                    "url": url,
+                    "description": str(row.get("Description") or "").strip(),
+                    "sortOrder": number(row.get("Sort Order")) or 999,
+                })
         links.sort(key=lambda r: (r["category"].lower(), r["sortOrder"], r["name"].lower()))
 
-        source = "cached Excel table"
+        excel_rows = table_rows(league_table)
+        live_rows = None
+        source = None
+
         try:
             live_rows, used_url = fetch_api_league()
             source = "FullTime API"
@@ -285,26 +343,50 @@ def main():
         except Exception as api_exc:
             print(f"WARNING: FullTime API refresh failed: {api_exc}")
             try:
-                live_rows = fetch_fa_html(); source = "FA Full-Time page"
+                live_rows = fetch_fa_html()
+                source = "FA Full-Time page"
                 print(f"League table refreshed directly from FA Full-Time: {len(live_rows)} teams")
             except Exception as fa_exc:
                 print(f"WARNING: Direct FA Full-Time refresh failed: {fa_exc}")
-                live_rows = table_rows(league_table)
-                print("Using the current League Table sheet as fallback.")
 
-        rewrite_table(league_sheet, league_table, LEAGUE_HEADERS, live_rows)
+        if live_rows:
+            chosen_rows = live_rows
+            rewrite_table(league_sheet, league_table, LEAGUE_HEADERS, chosen_rows)
+        elif excel_rows:
+            chosen_rows = excel_rows
+            source = "Excel League Table"
+            print(f"Using Excel League Table fallback: {len(chosen_rows)} teams")
+        elif last_published_rows:
+            chosen_rows = last_published_rows
+            source = "last published league table"
+            rewrite_table(league_sheet, league_table, LEAGUE_HEADERS, chosen_rows)
+            print(f"Using last published league table fallback: {len(chosen_rows)} teams")
+            print("League Table sheet has been repopulated from the last known-good published table.")
+        else:
+            chosen_rows = []
+            source = "no available league data"
+            print("WARNING: No live, Excel, or previously published league table is available.")
+            print("Existing league-table.json will not be replaced with an empty table.")
+
         book.save()
-        league = league_json(live_rows)
-        data_dir = Path(__file__).resolve().parent / "data"; data_dir.mkdir(parents=True, exist_ok=True)
+
         (data_dir / "links.json").write_text(json.dumps(links, indent=2, ensure_ascii=False), encoding="utf-8")
-        (data_dir / "league-table.json").write_text(json.dumps(league, indent=2, ensure_ascii=False), encoding="utf-8")
-        print(f"Dashboard extras refreshed: {len(links)} web links, {len(league)} league rows ({source})")
+        if chosen_rows:
+            league = league_json(chosen_rows)
+            league_json_path.write_text(json.dumps(league, indent=2, ensure_ascii=False), encoding="utf-8")
+            print(f"Dashboard extras refreshed: {len(links)} web links, {len(league)} league rows ({source})")
+        else:
+            print(f"Dashboard extras refreshed: {len(links)} web links; league table preserved ({source})")
     finally:
         if book is not None:
-            try: book.close()
-            except Exception: pass
-        try: app.quit()
-        except Exception: pass
+            try:
+                book.close()
+            except Exception:
+                pass
+        try:
+            app.quit()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":
